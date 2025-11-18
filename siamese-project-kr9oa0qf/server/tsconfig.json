@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "allowJs": true,
+    "target": "ES2018",
+    "module": "esnext",
+    "baseUrl": ".",
+    "lib": ["dom", "esnext"],
+    "importHelpers": true,
+    "declaration": false,
+    "sourceMap": true,
+    "rootDir": "./src",
+    "strict": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "emitDeclarationOnly": false,
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src", "types/**.d.ts"],
+  "exclude": ["dist"]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "autocode-template-server",
+  "version": "0.0.1",
+  "description": "autocode生成的项目的后端模版。注意，下面的依赖尽量减少，加快在WebContainer中的包安装和编译速度",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://git.corp.kuaishou.com/ks-ad/ad-fe/autocode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/node": "^24.3.0",
+    "rollup": "^2.61.1",
+    "rollup-plugin-tsconfig-paths": "^1.5.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@ad/ambase-backend": "latest",
+    "dayjs": "^1.11.18"
+  }
+}
