@@ -688,7 +688,7 @@ function Home() {
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative flex flex-col">
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img
@@ -699,7 +699,7 @@ function Home() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col flex-1">
       {/* Navigation */}
       <nav className="bg-transparent border-b border-gray-700/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -897,8 +897,8 @@ function Home() {
       </section>
 
       {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
-      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm rounded-t-3xl shadow-2xl pt-12 pb-20">
+      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-auto">
+        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
           {/* 标题和分类Tab */}
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-3 mb-6">
@@ -929,9 +929,9 @@ function Home() {
             </div>
           </div>
 
-            {/* Agent卡片列表 */}
-            <div>
-              {hotAgentsLoading ? (
+          {/* Agent卡片列表 - 添加内边距 */}
+          <div>
+            {hotAgentsLoading ? (
                 <div className="flex items-center justify-center space-x-2 text-gray-400 py-8">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
                   <span className="text-sm">加载热门Agent中...</span>
