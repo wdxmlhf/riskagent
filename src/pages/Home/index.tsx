@@ -903,7 +903,7 @@ function Home() {
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-3 mb-6">
               <Brain className="h-6 w-6 text-blue-400" />
-              <h2 className="text-2xl font-bold text-gray-100">推荐 Agent</h2>
+              <h2 className="text-2xl font-bold text-gray-100">热门 Agent</h2>
             </div>
 
             {/* 分类Tab */}
