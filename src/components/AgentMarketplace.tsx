@@ -900,7 +900,7 @@ export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketpl
                         onStartAgent(agent);
                       }
                     }}
-                    className={`group bg-gray-800/60 backdrop-blur-sm rounded-lg border border-gray-700/40 p-5 hover:bg-gray-800/80 hover:border-gray-600/60 transition-all duration-200 cursor-pointer ${loading ? 'opacity-70 pointer-events-none' : ''}`}
+                    className={`group bg-gray-800/60 backdrop-blur-sm rounded-lg border border-gray-700/40 p-5 hover:bg-gray-800/80 hover:border-gray-600/60 transition-colors duration-200 cursor-pointer ${loading ? 'opacity-70 pointer-events-none' : ''}`}
                   >
                     <div className="flex items-start space-x-3 mb-4">
                       <div className={`w-10 h-10 bg-gradient-to-r ${agent.gradient} rounded-lg flex-shrink-0`}></div>
