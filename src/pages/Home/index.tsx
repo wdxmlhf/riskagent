@@ -136,6 +136,9 @@ function Home() {
   // Agent推荐模块默认展开
   const [isAgentSectionExpanded, setIsAgentSectionExpanded] = useState(true);
 
+  // Agent分类Tab状态
+  const [selectedCategory, setSelectedCategory] = useState<string>('全部');
+
   const getData = async() => {
     try {
       const result = await post('/rest/risk/control/manager/dataPlatform/agentList', {
@@ -814,36 +817,6 @@ function Home() {
             风控不再复杂，用对话驱动决策
           </p>
 
-          {/* 切换Agent按钮区域 */}
-          <div className="max-w-3xl mx-auto mb-6">
-            <div className="flex flex-wrap gap-3 justify-center">
-              {hotAgents.slice(0, 6).map((agent) => (
-                <button
-                  key={agent.agentCode}
-                  onClick={() => {
-                    setSelectedFeature(agent.agentName);
-                    const agentObj = {
-                      id: agent.agentCode,
-                      name: agent.agentName,
-                      description: agent.agentDescription,
-                      category: agent.agentCategory,
-                      author: agent.agentManager,
-                      gradient: 'from-blue-400 to-purple-500'
-                    };
-                    setSelectedAgent(agentObj);
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    selectedFeature === agent.agentName
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
-                      : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
-                  }`}
-                >
-                  {agent.agentName}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* AI Assistant Message */}
           <div className="max-w-3xl mx-auto mb-10">
             {/* ChatGPT Style Input Area */}
@@ -889,16 +862,72 @@ function Home() {
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Agent推荐模块 */}
-          <div className="w-full max-w-[1600px] mx-auto px-4 pt-15">
-            {/* 标题区域 */}
-            <div className="flex items-center justify-center space-x-3 mb-8">
+            {/* 切换Agent按钮区域 - 移到输入框下方 */}
+            <div className="mt-6">
+              <div className="flex flex-wrap gap-3 justify-center">
+                {hotAgents.slice(0, 6).map((agent) => (
+                  <button
+                    key={agent.agentCode}
+                    onClick={() => {
+                      setSelectedFeature(agent.agentName);
+                      const agentObj = {
+                        id: agent.agentCode,
+                        name: agent.agentName,
+                        description: agent.agentDescription,
+                        category: agent.agentCategory,
+                        author: agent.agentManager,
+                        gradient: 'from-blue-400 to-purple-500'
+                      };
+                      setSelectedAgent(agentObj);
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      selectedFeature === agent.agentName
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                        : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
+                    }`}
+                  >
+                    {agent.agentName}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Agent推荐模块 - 独立section，有自己的背景色 */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800/30 relative">
+        <div className="w-full max-w-[1600px] mx-auto">
+          {/* 标题和分类Tab */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center space-x-3 mb-6">
               <Brain className="h-6 w-6 text-blue-400" />
               <h2 className="text-2xl font-bold text-gray-100">推荐 Agent</h2>
               <span className="text-sm text-gray-400 bg-gray-700/50 px-3 py-1 rounded-full">{hotAgents.length} 个可用</span>
             </div>
+
+            {/* 分类Tab */}
+            <div className="flex flex-wrap gap-2 justify-center">
+              {['全部', ...Array.from(new Set(hotAgents.map(a => a.agentCategory)))].map((category) => {
+                const count = category === '全部' ? hotAgents.length : hotAgents.filter(a => a.agentCategory === category).length;
+                return (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      selectedCategory === category
+                        ? 'bg-blue-600/20 text-blue-400 border border-blue-500/50 shadow-lg shadow-blue-500/20'
+                        : 'bg-gray-700/30 text-gray-400 border border-gray-600/30 hover:bg-gray-700/50 hover:text-gray-300'
+                    }`}
+                  >
+                    {category}
+                    <span className="ml-2 text-xs opacity-70">({count})</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
             {/* Agent卡片列表 */}
             <div>
@@ -919,7 +948,9 @@ function Home() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {hotAgents.map((agent) => (
+                  {hotAgents
+                    .filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory)
+                    .map((agent) => (
                     <AgentCard
                       key={agent.agentCode}
                       agent={agent}
@@ -969,9 +1000,7 @@ function Home() {
                   </div>
                 </div>
               )}
-            </div>
           </div>
-
         </div>
       </section>
       </div>
