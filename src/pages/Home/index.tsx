@@ -814,6 +814,36 @@ function Home() {
             风控不再复杂，用对话驱动决策
           </p>
 
+          {/* 切换Agent按钮区域 */}
+          <div className="max-w-3xl mx-auto mb-6">
+            <div className="flex flex-wrap gap-3 justify-center">
+              {hotAgents.slice(0, 6).map((agent) => (
+                <button
+                  key={agent.agentCode}
+                  onClick={() => {
+                    setSelectedFeature(agent.agentName);
+                    const agentObj = {
+                      id: agent.agentCode,
+                      name: agent.agentName,
+                      description: agent.agentDescription,
+                      category: agent.agentCategory,
+                      author: agent.agentManager,
+                      gradient: 'from-blue-400 to-purple-500'
+                    };
+                    setSelectedAgent(agentObj);
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    selectedFeature === agent.agentName
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
+                  }`}
+                >
+                  {agent.agentName}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* AI Assistant Message */}
           <div className="max-w-3xl mx-auto mb-10">
             {/* ChatGPT Style Input Area */}
@@ -893,10 +923,18 @@ function Home() {
                     <AgentCard
                       key={agent.agentCode}
                       agent={agent}
-                      isSelected={selectedFeature === agent.agentName}
+                      isSelected={false}
                       onClick={() => {
-                        handleFeaturePillClick(agent.agentName);
-                        setIsAgentSectionExpanded(false);
+                        const agentObj = {
+                          id: agent.agentCode,
+                          name: agent.agentName,
+                          description: agent.agentDescription,
+                          category: agent.agentCategory,
+                          author: agent.agentManager,
+                          gradient: 'from-blue-400 to-purple-500'
+                        };
+                        setSelectedAgent(agentObj);
+                        setCurrentPage('agentChatPage');
                       }}
                     />
                   ))}
