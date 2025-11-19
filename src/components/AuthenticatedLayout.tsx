@@ -3,9 +3,8 @@ import { Button, message } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import { UserStore } from '@/store/UserStore';
-import { ambase, gotoLoginWithSSO } from '@/integrations/ambase';
+import { ambase, gotoLoginWithSSO, Role } from '@/integrations/ambase';
 import Loader from './Loader';
-import { Role } from '@ad/ambase';
 
 
 type AuthParams = {

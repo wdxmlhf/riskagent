@@ -19,11 +19,6 @@ export default defineConfig(({ command, mode }) => {
       presets: [
         ['@babel/preset-typescript', { isTSX: true, allExtensions: true }]
       ],
-      plugins: [
-        [
-          resolve(__dirname, 'babel-plugins/jsx-dom-loc.cts')
-        ]
-      ],
       // 确保保留位置信息
       retainLines: true,
       compact: false

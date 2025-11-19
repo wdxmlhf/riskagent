@@ -14,7 +14,7 @@ const AppRouter = () => {
     <HashRouter>
       <Routes>
         {/* 主页默认允许匿名访问 */}
-        <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: false }} ><Home /></AuthenticatedLayout>} />
+        <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
 
         {/* 以下为示例，你可以将其删除 */}
         <Route path="/example1" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Example1 /></Layout></AuthenticatedLayout>} />

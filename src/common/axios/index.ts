@@ -11,12 +11,9 @@ export interface FetchRequestConfig extends RequestInit {
 // 全局配置
 const defaultConfig: FetchRequestConfig = {
   timeout: 600000,
-  //baseURL: 'https://crc-manager.staging.kuaishou.com',
-  baseURL: 'https://crc-manager.corp.kuaishou.com',
+  baseURL: '', // 使用相对路径或mock数据
   headers: {
     'Content-Type': 'application/json',
-   // 'trace-context': '{"laneId":"STAGING.risk_agent"}',
-    //'trace-context': '{"laneId":"PRT.risk_agent"}',
   },
 };
 
@@ -75,11 +72,85 @@ const createTimeoutPromise = (timeout: number): Promise<never> => {
   });
 };
 
+// Mock数据拦截器
+const mockData: Record<string, any> = {
+  '/rest/risk/control/manager/dataPlatform/agentList': {
+    status: 0,
+    msg: 'success',
+    data: {
+      list: [],
+      total: 0
+    }
+  },
+  '/rest/risk/control/manager/dataPlatform/hotAgentList': {
+    status: 0,
+    msg: 'success',
+    data: [
+      {
+        agentCode: 'traffic_analysis',
+        agentName: '流量分析',
+        agentCategory: '风险感知Agent',
+        agentBelong: 'AI部门',
+        agentIcon: '',
+        agentManager: 'system',
+        agentUser: 'system',
+        agentDescription: '专业的流量质量case排查助手，帮助您快速定位流量异常',
+        agentPrompt: '流量分析助手',
+        createTime: Date.now(),
+        status: 1
+      },
+      {
+        agentCode: 'data_finder',
+        agentName: '找数据',
+        agentCategory: '数据Agent',
+        agentBelong: 'AI部门',
+        agentIcon: '',
+        agentManager: 'system',
+        agentUser: 'system',
+        agentDescription: '帮助您快速找到需要的数据表和指标',
+        agentPrompt: '数据查询助手',
+        createTime: Date.now(),
+        status: 1
+      },
+      {
+        agentCode: 'analysis_assistant',
+        agentName: '分析助手',
+        agentCategory: '风险归因Agent',
+        agentBelong: 'AI部门',
+        agentIcon: '',
+        agentManager: 'system',
+        agentUser: 'system',
+        agentDescription: '智能分析助手，提供专业的数据分析服务',
+        agentPrompt: '分析助手',
+        createTime: Date.now(),
+        status: 1
+      }
+    ],
+    requestId: 'mock-request-id'
+  },
+  '/rest/risk/control/manager/dataPlatform/frequentlyAgentList': {
+    status: 0,
+    msg: 'success',
+    data: [],
+    requestId: 'mock-request-id'
+  }
+};
+
 // 通用请求函数
 const request = async <T>(url: string, config: FetchRequestConfig = {}): Promise<T> => {
   const mergedConfig = { ...defaultConfig, ...config };
   const { timeout = 10000, params, baseURL, ...fetchConfig } = mergedConfig;
-  
+
+  // Mock数据拦截
+  if (mockData[url]) {
+    console.log('[Mock] 拦截请求:', url);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(mockData[url] as T);
+      }, 300); // 模拟网络延迟
+    });
+  }
+
   try {
     // 构建URL
     const fullUrl = buildUrl(url, params, baseURL);
