@@ -53,6 +53,17 @@ const categoryConfigs: CategoryConfig[] = [
   { code: 'riskData', displayName: '数据Agent' }
 ];
 
+// Agent卡片接口定义
+interface AgentCard {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  author: string;
+  gradient: string;
+  status?: number;
+}
+
 // 增加missing interface定义
 interface AgentDataItem {
   agentCode: string;
