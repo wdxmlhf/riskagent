@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%; width: 100%; margin: 0; padding: 0;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoCode生成项目</title>
+  <style>
+  /* AUTOCODE_INJECTION_MARKER_STYLE */
+
+  .selection-highlight {
+    position: fixed;
+    background-color: rgba(0, 123, 255, 0.2);
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    transition: all 0.1s ease;
+  }
+  
+  .selection-mode {
+    cursor: crosshair !important;
+  }
+  
+  .selection-mode * {
+    cursor: crosshair !important;
+  }
+  
+  .element-hover-highlight {
+    outline: 2px dashed #ff6b35 !important;
+    outline-offset: 2px !important;
+    background-color: rgba(255, 107, 53, 0.1) !important;
+  }
+  
+  .selection-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 9999;
+    cursor: crosshair !important;
+  }
+  
+  body.selection-mode {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  body.selection-mode button,
+  body.selection-mode a,
+  body.selection-mode input,
+  body.selection-mode select,
+  body.selection-mode textarea,
+  body.selection-mode [onclick],
+  body.selection-mode [role="button"],
+  body.selection-mode [tabindex] {
+    pointer-events: none !important;
+    cursor: crosshair !important;
+  }
+  
+  body.selection-mode input,
+  body.selection-mode textarea,
+  body.selection-mode select {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
+  
+  .selectable {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+</style>
+</head>
+  <body style="height: 100%; width: 100%; margin: 0; padding: 0;">
+    <div id="root" style="height: 100%; width: 100%;"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  <script>
+  /* AUTOCODE_INJECTION_MARKER_SCRIPT */
+
+  (function() {
+    let isSelecting = false;
+    let isDragging = false;
+    let startX, startY;
+    let selectionBox = null;
+    let selectionOverlay = null;
+    let selectedElements = [];
+    let hoveredElement = null;
+
+    // 监听控制台报错
+    window.addEventListener('error', event => {
+      const error = event.error
+      if (error) {
+        window.parent.postMessage({
+          type: 'CAPTURE_ERROR',
+          data: {
+            event: event.type,
+            message: error.message,
+            stack: error.stack,
+          },
+        },'*')
+      }
+    })
+    window.addEventListener('unhandledrejection', event => {
+      const error = event.reason
+      if (error) {
+        window.parent.postMessage({
+          type: 'CAPTURE_ERROR',
+          data: {
+            event: event.type,
+            message: error.message,
+            stack: error.stack,
+          },
+        },'*')
+      }
+    })
+
+    function loadHtmlToImage() {
+      return new Promise((resolve, reject) => {
+        if (window.htmlToImage) {
+          resolve(window.htmlToImage);
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js';
+        script.onload = () => {
+          if (window.htmlToImage) {
+            resolve(window.htmlToImage);
+          } else {
+            reject(new Error('html-to-image err'));
+          }
+        };
+        script.onerror = () => reject(new Error('html-to-image err'));
+        document.head.appendChild(script);
+      });
+    }
+
+    async function html2Png(element, options = {}) {
+      try {
+        const htmlToImage = await loadHtmlToImage();
+      
+        const defaultOptions = {
+          quality: 0.7,
+          backgroundColor: '#ffffff',
+          pixelRatio: window.devicePixelRatio || 1,
+          includeStyles: true,
+          ...options
+        };
+
+        const dataUrl = await htmlToImage.toPng(element, defaultOptions);
+        return dataUrl;
+      } catch (error) {
+        throw new Error('get PNG err');
+      }
+    }
+
+    async function handleScreenshotRequest(options = {}) {
+      try {
+
+        let targetElement = document.body;
+        
+        if (options.selector) {
+          const selectedElement = document.querySelector(options.selector);
+          if (selectedElement) {
+            targetElement = selectedElement;
+          }
+        }
+
+        const tempRemovedElements = [];
+        const selectionHighlights = document.querySelectorAll('.selection-highlight, .element-hover-highlight');
+        selectionHighlights.forEach(el => {
+          tempRemovedElements.push({
+            element: el,
+            parent: el.parentNode
+          });
+          el.remove();
+        });
+
+        const hadSelectionMode = document.body.classList.contains('selection-mode');
+        if (hadSelectionMode) {
+          document.body.classList.remove('selection-mode');
+        }
+
+        await new Promise(resolve => requestAnimationFrame(resolve));
+
+        const dataUrl = await html2Png(targetElement, options);
+
+        tempRemovedElements.forEach(item => {
+          if (item.parent) {
+            item.parent.appendChild(item.element);
+          }
+        });
+
+        if (hadSelectionMode) {
+          document.body.classList.add('selection-mode');
+        }
+
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'SCREENSHOT_RESULT',
+            data: {
+              success: true,
+              dataUrl: dataUrl,
+              timestamp: Date.now(),
+              elementInfo: {
+                tagName: targetElement.tagName,
+                className: targetElement.className,
+                id: targetElement.id,
+                width: targetElement.offsetWidth,
+                height: targetElement.offsetHeight
+              }
+            }
+          }, '*');
+        }
+
+        return dataUrl;
+      } catch (error) {
+        console.error('injectCode', 'screenshot err:', error);
+        
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'SCREENSHOT_RESULT',
+            data: {
+              success: false,
+              error: error.message,
+              timestamp: Date.now()
+            }
+          }, '*');
+        }
+        
+        throw error;
+      }
+    }
+
+    function replaceDOMElement(originalTag, replacementTag) {
+      try {
+
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = replacementTag;
+        const newElement = tempContainer.firstElementChild;
+        
+        if (!newElement) {
+          return { success: false, error: '!newElement' };
+        }
+        
+        let replacedCount = 0;
+        const elementsToReplace = [];
+        
+        if (originalTag.includes('<') && originalTag.includes('>')) {
+
+          const allElements = document.querySelectorAll('*');
+          for (let element of allElements) {
+            if (element.outerHTML === originalTag) {
+              elementsToReplace.push(element);
+            }
+          }
+
+          if (elementsToReplace.length === 0) {
+            const dataLocMatch = originalTag.match(/data-loc="([^"]+)"/);
+            if (dataLocMatch) {
+              const dataLocValue = dataLocMatch[1];
+              const elementsWithDataLoc = document.querySelectorAll('[data-loc="' + dataLocValue + '"]');
+              elementsToReplace.push(...elementsWithDataLoc);
+            }
+          }
+          
+          if (elementsToReplace.length === 0) {
+            const tagMatch = originalTag.match(/<(w+)[^>]*>([^<]*)</);
+            if (tagMatch) {
+              const tagName = tagMatch[1];
+              const textContent = tagMatch[2].trim();
+              if (textContent) {
+                const candidateElements = document.getElementsByTagName(tagName);
+                for (let element of candidateElements) {
+                  if (element.textContent && element.textContent.trim() === textContent) {
+                    elementsToReplace.push(element);
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        if (elementsToReplace.length === 0 && !originalTag.includes('<') && !originalTag.includes('>')) {
+          try {
+            const elements = document.querySelectorAll(originalTag);
+            elementsToReplace.push(...elements);
+          } catch (e) {
+            console.log('injectCode', 'elementsToReplace:', e.message);
+          }
+        }
+        
+        if (elementsToReplace.length === 0 && !originalTag.includes('<') && !originalTag.includes('.') && !originalTag.includes('#')) {
+          const elements = document.getElementsByTagName(originalTag);
+          elementsToReplace.push(...elements);
+        }
+        
+        for (let originalElement of elementsToReplace) {
+          try {
+
+            const clonedNewElement = newElement.cloneNode(true);
+            
+            const preserveAttributes = ['id', 'data-*'];
+            for (let attr of originalElement.attributes) {
+              if (preserveAttributes.some(pattern => 
+                pattern === attr.name || 
+                (pattern.includes('*') && attr.name.startsWith(pattern.replace('*', '')))
+              )) {
+                if (!clonedNewElement.hasAttribute(attr.name)) {
+                  clonedNewElement.setAttribute(attr.name, attr.value);
+                }
+              }
+            }
+            
+            originalElement.parentNode.replaceChild(clonedNewElement, originalElement);
+            replacedCount++;
+          } catch (error) {
+            console.error('injectCode', 'replaceDomeErr: ', error);
+          }
+        }
+        
+        const result = {
+          success: true,
+          replacedCount: replacedCount,
+        };
+        
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'DOM_REPLACE_RESULT',
+            data: result
+          }, '*');
+        }
+        
+        return result;
+        
+      } catch (error) {
+        console.error('injectCode', 'replaceDomeErr:', error);
+        const errorResult = {
+          success: false,
+          error: error.message,
+          replacedCount: 0
+        };
+        
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'DOM_REPLACE_RESULT',
+            data: errorResult
+          }, '*');
+        }
+        
+        return errorResult;
+      }
+    }
+    
+    function createSelectionBox() {
+      selectionBox = document.createElement('div');
+      selectionBox.className = 'selection-highlight';
+      document.body.appendChild(selectionBox);
+    }
+    
+    function createSelectionOverlay() {
+      if (selectionOverlay) return;
+      selectionOverlay = document.createElement('div');
+      selectionOverlay.className = 'selection-overlay';
+      document.body.appendChild(selectionOverlay);
+    }
+    
+    function removeSelectionOverlay() {
+      if (selectionOverlay) {
+        selectionOverlay.parentNode && selectionOverlay.parentNode.removeChild(selectionOverlay);
+        selectionOverlay = null;
+      }
+    }
+    
+    function updateSelectionBox(currentX, currentY) {
+      if (!selectionBox) return;
+      
+      const left = Math.min(startX, currentX);
+      const top = Math.min(startY, currentY);
+      const width = Math.abs(currentX - startX);
+      const height = Math.abs(currentY - startY);
+      
+      selectionBox.style.left = left + 'px';
+      selectionBox.style.top = top + 'px';
+      selectionBox.style.width = width + 'px';
+      selectionBox.style.height = height + 'px';
+    }
+    
+    function removeSelectionBox() {
+      if (selectionBox) {
+        document.body.removeChild(selectionBox);
+        selectionBox = null;
+      }
+    }
+    
+    function isRootContainer(element) {
+
+      if (element.id === 'root' || element.id === 'app' || 
+          element.getAttribute('data-reactroot') !== null) {
+        return true;
+      }
+      
+      const children = element.children;
+      if (children.length > 3) {
+        const elementRect = element.getBoundingClientRect();
+        const viewportArea = window.innerWidth * window.innerHeight;
+        const elementArea = elementRect.width * elementRect.height;
+        
+        if (elementArea > viewportArea * 0.8) {
+          return true;
+        }
+      }
+      
+      return false;
+    }
+    
+    function getBestTargetElement(element) {
+      if (!element || element === document.body || element === document.documentElement) {
+        return null;
+      }
+      
+      if (isRootContainer(element)) {
+        const allElements = document.elementsFromPoint(
+          event?.clientX || 0, 
+          event?.clientY || 0
+        );
+        
+        for (let el of allElements) {
+          if (el !== element && 
+              !isRootContainer(el) && 
+              el !== document.body && 
+              el !== document.documentElement &&
+              !el.classList.contains('selection-highlight') &&
+              !el.classList.contains('element-hover-highlight')) {
+            return el;
+          }
+        }
+        
+        return null;
+      }
+      
+      return element;
+    }
+    
+    function highlightElement(element) {
+      if (hoveredElement) {
+        hoveredElement.classList.remove('element-hover-highlight');
+      }
+      
+      const targetElement = getBestTargetElement(element);
+      if (targetElement) {
+        targetElement.classList.add('element-hover-highlight');
+        hoveredElement = targetElement;
+      } else {
+        hoveredElement = null;
+      }
+    }
+    
+    function removeElementHighlight() {
+      if (hoveredElement) {
+        hoveredElement.classList.remove('element-hover-highlight');
+        hoveredElement = null;
+      }
+    }
+    
+    function withCleanStyles(element, callback) {
+      const hadHoverHighlight = element.classList.contains('element-hover-highlight');
+      const hadSelectionMode = document.body.classList.contains('selection-mode');
+      
+      if (hadHoverHighlight) {
+        element.classList.remove('element-hover-highlight');
+      }
+      if (hadSelectionMode) {
+        document.body.classList.remove('selection-mode');
+      }
+      
+      element.offsetHeight;
+      
+      try {
+        return callback();
+      } finally {
+        if (hadHoverHighlight) {
+          element.classList.add('element-hover-highlight');
+        }
+        if (hadSelectionMode) {
+          document.body.classList.add('selection-mode');
+        }
+      }
+    }
+    
+    function enableSelectionMode() {
+      document.body.classList.add('selection-mode');
+      createSelectionOverlay();
+    }
+    
+    function disableSelectionMode() {
+      document.body.classList.remove('selection-mode');
+      removeElementHighlight();
+      removeSelectionOverlay();
+    }
+    
+    function getElementsInSelection() {
+      if (!selectionBox) return [];
+      
+      const rect = selectionBox.getBoundingClientRect();
+      const elements = [];
+      
+      function isRootContainer(element) {
+
+        if (element.id === 'root' || element.id === 'app' || 
+            element.getAttribute('data-reactroot') !== null) {
+          return true;
+        }
+        
+        const children = element.children;
+        if (children.length > 3) {
+          const elementRect = element.getBoundingClientRect();
+          const viewportArea = window.innerWidth * window.innerHeight;
+          const elementArea = elementRect.width * elementRect.height;
+          
+          if (elementArea > viewportArea * 0.8) {
+            return true;
+          }
+        }
+        
+        return false;
+      }
+      
+      function hasActualContent(element) {
+        const textContent = element.textContent?.trim();
+        if (textContent && textContent.length > 0) {
+          return true;
+        }
+        
+        return withCleanStyles(element, () => {
+          const style = window.getComputedStyle(element);
+          
+          if (style.backgroundColor !== 'rgba(0, 0, 0, 0)' && 
+              style.backgroundColor !== 'transparent' &&
+              style.backgroundColor !== 'initial') {
+            return true;
+          }
+          
+          if (style.backgroundImage !== 'none') {
+            return true;
+          }
+          
+          if (style.borderWidth && style.borderWidth !== '0px') {
+            return true;
+          }
+          
+          const interactiveTags = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA', 'A', 'IMG', 'VIDEO', 'CANVAS', 'SVG'];
+          if (interactiveTags.includes(element.tagName)) {
+            return true;
+          }
+          
+          return false;
+        });
+      }
+      
+      function traverseElements(element) {
+
+        if (element === document.body || 
+            element === document.documentElement || 
+            element === selectionBox ||
+            element.classList.contains('selection-highlight') ||
+            element.classList.contains('element-hover-highlight')) {
+
+          for (let child of element.children) {
+            traverseElements(child);
+          }
+          return;
+        }
+        
+        const elementRect = element.getBoundingClientRect();
+        
+        if (elementRect.left < rect.right && 
+            elementRect.right > rect.left && 
+            elementRect.top < rect.bottom && 
+            elementRect.bottom > rect.top) {
+          
+          const intersectionArea = Math.max(0, Math.min(rect.right, elementRect.right) - Math.max(rect.left, elementRect.left)) *
+                                   Math.max(0, Math.min(rect.bottom, elementRect.bottom) - Math.max(rect.top, elementRect.top));
+          
+          const elementArea = elementRect.width * elementRect.height;
+          const selectionArea = rect.width * rect.height;
+
+          const intersectionRatio = elementArea > 0 ? intersectionArea / elementArea : 0;
+          const selectionRatio = selectionArea > 0 ? intersectionArea / selectionArea : 0;
+          
+          if (!isRootContainer(element) && 
+              (hasActualContent(element) || elementArea < 10000) && 
+              (intersectionRatio > 0.3 || selectionRatio > 0.1 || intersectionArea > 500)) {
+            
+            elements.push(element);
+          }
+        }
+        
+        for (let child of element.children) {
+          traverseElements(child);
+        }
+      }
+      
+      traverseElements(document.body);
+      
+      const filteredElements = [];
+      
+      elements.sort((a, b) => {
+        const aRect = a.getBoundingClientRect();
+        const bRect = b.getBoundingClientRect();
+        const aArea = aRect.width * aRect.height;
+        const bArea = bRect.width * bRect.height;
+        return aArea - bArea;
+      });
+      
+      elements.forEach(element => {
+        let shouldAdd = true;
+        
+        for (let existing of filteredElements) {
+
+          if (element.contains(existing)) {
+            shouldAdd = false;
+            break;
+          }
+
+          if (existing.contains(element)) {
+            const index = filteredElements.indexOf(existing);
+            filteredElements.splice(index, 1);
+            break;
+          }
+        }
+        
+        if (shouldAdd) {
+          filteredElements.push(element);
+        }
+      });
+      
+      return filteredElements;
+    }
+    
+    function getElementInfo(element) {
+      return withCleanStyles(element, () => {
+        const rect = element.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(element);
+        const domInfo = getCompleteElementDOM(element);
+
+        let dataLoc = element.getAttribute('data-loc');
+        let currentElement = element;
+        let inheritedDataLoc = null;
+
+        while (!dataLoc && currentElement && currentElement !== document.body) {
+          currentElement = currentElement.parentElement;
+          if (currentElement) {
+            const parentDataLoc = currentElement.getAttribute('data-loc');
+            if (parentDataLoc) {
+              inheritedDataLoc = parentDataLoc;
+              break;
+            }
+          }
+        }
+        
+        const attributes = Array.from(element.attributes).map(attr => ({
+          name: attr.name,
+          value: typeof attr.value === 'string' ? attr.value : (attr.value?.baseVal || String(attr.value))
+        }));
+        
+        if (!dataLoc && inheritedDataLoc) {
+          attributes.push({
+            name: 'data-loc',
+            value: inheritedDataLoc
+          });
+        }
+        
+        return {
+          tagName: element.tagName,
+          id: element.id,
+          className: typeof element.className === 'string' ? element.className : element.className?.baseVal || '',
+          textContent: element.textContent?.substring(0, 100) || '',
+          attributes: attributes,
+          position: {
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+          },
+          styles: {
+            backgroundColor: computedStyle.backgroundColor,
+            color: computedStyle.color,
+            fontSize: computedStyle.fontSize,
+            fontWeight: computedStyle.fontWeight,
+            display: computedStyle.display,
+            position: computedStyle.position
+          },
+          path: getElementPath(element),
+          domInfo: domInfo
+        };
+      });
+    }
+    
+    function getElementPath(element) {
+      const path = [];
+      let current = element;
+      
+      while (current && current !== document.body) {
+        let selector = current.tagName.toLowerCase();
+        
+        if (current.id) {
+          selector += '#' + current.id;
+        } else if (current.className) {
+          const classes = Array.from(current.classList).join('.');
+          selector += '.' + classes;
+        }
+        
+        const siblings = Array.from(current.parentNode.children).filter(child => 
+          child.tagName === current.tagName
+        );
+        if (siblings.length > 1) {
+          const index = siblings.indexOf(current);
+          selector += ':nth-child(' + (index + 1) + ')';
+        }
+        
+        path.unshift(selector);
+        current = current.parentNode;
+      }
+      
+      return path.join(' > ');
+    }
+    
+    function getCompleteElementDOM(element) {
+      const tagName = element.tagName.toLowerCase();
+      
+      const selfClosingTags = [
+        'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+        'link', 'meta', 'param', 'source', 'track', 'wbr'
+      ];
+      
+      const attributes = Array.from(element.attributes)
+        .map(attr => {
+          const value = typeof attr.value === 'string' ? attr.value : (attr.value?.baseVal || String(attr.value));
+          return attr.name + '="' + value + '"';
+        })
+        .join(' ');
+      
+      const attributesStr = attributes ? ' ' + attributes : '';
+      
+      if (selfClosingTags.includes(tagName)) {
+        return {
+          type: 'self-closing',
+          outerHTML: '<' + tagName + attributesStr + ' />',
+          tagName: tagName,
+          attributes: attributesStr.trim(),
+          hasChildren: false,
+          childrenCount: 0
+        };
+      }
+      
+      const outerHTML = element.outerHTML;
+      const innerHTML = element.innerHTML;
+      const hasChildren = element.children.length > 0;
+      const childrenCount = element.children.length;
+      const hasOnlyTextContent = !hasChildren && element.textContent.trim().length > 0;
+      
+      let simplifiedTag = '';
+      if (hasOnlyTextContent) {
+
+        const textContent = element.textContent.trim();
+        const truncatedText = textContent.length > 50 ? textContent.substring(0, 50) + '...' : textContent;
+        simplifiedTag = '<' + tagName + attributesStr + '>' + truncatedText + '</' + tagName + '>';
+      } else if (!hasChildren) {
+
+        simplifiedTag = '<' + tagName + attributesStr + '></' + tagName + '>';
+      } else {
+
+        simplifiedTag = '<' + tagName + attributesStr + '>...' + childrenCount + ' children...</' + tagName + '>';
+      }
+      
+      return {
+        type: 'normal',
+        outerHTML: outerHTML,
+        innerHTML: innerHTML,
+        simplifiedTag: simplifiedTag,
+        tagName: tagName,
+        attributes: attributesStr.trim(),
+        hasChildren: hasChildren,
+        childrenCount: childrenCount,
+        hasOnlyTextContent: hasOnlyTextContent,
+        textContent: hasOnlyTextContent ? element.textContent.trim() : ''
+      };
+    }
+    
+    function sendSelectedElements() {
+      const elements = getElementsInSelection();
+      const elementInfos = elements.map(getElementInfo);
+      
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'ELEMENT_SELECTION',
+          data: {
+            elements: elementInfos,
+            selectionRect: selectionBox ? {
+              left: parseInt(selectionBox.style.left),
+              top: parseInt(selectionBox.style.top),
+              width: parseInt(selectionBox.style.width),
+              height: parseInt(selectionBox.style.height)
+            } : null
+          }
+        }, '*');
+        
+        elementInfos.forEach((elementInfo, index) => {
+          window.parent.postMessage({
+            type: 'DOM_ELEMENT_LOCATED',
+            data: {
+              element: elementInfo,
+              timestamp: Date.now(),
+              location: {
+                url: window.location.href,
+                title: document.title
+              },
+              selectionType: 'area',
+              selectionIndex: index,
+              totalSelected: elementInfos.length
+            }
+          }, '*');
+        });
+      }
+    }
+    
+    window.addEventListener('message', function(event) {
+
+      switch (event.data.type) {
+        case 'START_SELECTION':
+          isSelecting = true;
+          isDragging = false;
+          enableSelectionMode();
+          break;
+        case 'STOP_SELECTION':
+          isSelecting = false;
+          isDragging = false;
+          disableSelectionMode();
+          removeSelectionBox();
+          break;
+        case 'GET_SELECTED_ELEMENTS':
+          sendSelectedElements();
+          break;
+        case 'REPLACE_DOM_ELEMENT':
+          if (event.data.originalTag && event.data.replacementTag) {
+            replaceDOMElement(event.data.originalTag, event.data.replacementTag);
+          }
+          break;
+        case 'GET_SCREENSHOT':
+          try {
+            const screenshotOptions = event.data.options || {};
+            handleScreenshotRequest(screenshotOptions);
+          } catch (error) {
+            console.error('screenshot err:', error);
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({
+                type: 'SCREENSHOT_RESULT',
+                data: {
+                  success: false,
+                  error: error.message,
+                  timestamp: Date.now()
+                }
+              }, '*');
+            }
+          }
+          break;
+      }
+    });
+    
+    document.addEventListener('mousedown', function(e) {
+      if (!isSelecting) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      
+      startX = e.clientX;
+      startY = e.clientY;
+      
+      if (hoveredElement) {
+        isDragging = false;
+      } else {
+        isDragging = true;
+        createSelectionBox();
+        removeElementHighlight();
+      }
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+      if (!isSelecting) return;
+      
+      if (!isDragging && startX !== undefined && startY !== undefined) {
+        const deltaX = Math.abs(e.clientX - startX);
+        const deltaY = Math.abs(e.clientY - startY);
+        const dragThreshold = 5; 
+        
+        if (deltaX > dragThreshold || deltaY > dragThreshold) {
+
+          isDragging = true;
+          createSelectionBox();
+          removeElementHighlight();
+        }
+      }
+      
+      if (isDragging && selectionBox) {
+
+        updateSelectionBox(e.clientX, e.clientY);
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      } else if (!isDragging) {
+
+        let prevPointerEvents;
+        if (selectionOverlay) {
+          prevPointerEvents = selectionOverlay.style.pointerEvents;
+          selectionOverlay.style.pointerEvents = 'none';
+        }
+        const elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
+        if (selectionOverlay) {
+          selectionOverlay.style.pointerEvents = prevPointerEvents || 'auto';
+        }
+        if (elementUnderMouse && 
+            elementUnderMouse !== hoveredElement && 
+            !elementUnderMouse.classList.contains('selection-highlight')) {
+          highlightElement(elementUnderMouse);
+        }
+      }
+    });
+    
+    document.addEventListener('mouseup', function(e) {
+      if (!isSelecting) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      
+      if (isDragging && selectionBox) {
+
+        isDragging = false;
+        
+        const rect = selectionBox.getBoundingClientRect();
+        if (rect.width > 5 && rect.height > 5) {
+
+          setTimeout(() => {
+            sendSelectedElements();
+            removeSelectionBox();
+          }, 50);
+        } else {
+          removeSelectionBox();
+        }
+      } else if (!isDragging && startX !== undefined && startY !== undefined) {
+
+        let targetElement = null;
+        
+        if (hoveredElement && 
+            hoveredElement !== document.body && 
+            hoveredElement !== document.documentElement) {
+          targetElement = hoveredElement;
+        } else {
+
+          const elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
+          if (elementUnderMouse && 
+              elementUnderMouse !== document.body && 
+              elementUnderMouse !== document.documentElement) {
+            targetElement = elementUnderMouse;
+          }
+        }
+        
+        if (targetElement) {
+
+          const elementInfo = getElementInfo(targetElement);
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ELEMENT_SELECTION',
+              data: {
+                elements: [elementInfo],
+                selectionRect: null,
+                clickSelection: true
+              }
+            }, '*');
+
+            window.parent.postMessage({
+              type: 'DOM_ELEMENT_LOCATED',
+              data: {
+                element: elementInfo,
+                timestamp: Date.now(),
+                location: {
+                  url: window.location.href,
+                  title: document.title
+                }
+              }
+            }, '*');
+          }
+          
+          const originalHighlight = hoveredElement;
+          if (targetElement !== originalHighlight) {
+            highlightElement(targetElement);
+          }
+          
+          setTimeout(() => {
+            removeElementHighlight();
+          }, 200);
+        }
+      }
+      
+      startX = undefined;
+      startY = undefined;
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!isSelecting) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }, true);
+    
+    const interceptHoverEvent = function(e) {
+      if (!isSelecting) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    };
+    
+    document.addEventListener('mouseover', interceptHoverEvent, true);
+    document.addEventListener('mouseenter', interceptHoverEvent, true);
+    document.addEventListener('mouseleave', interceptHoverEvent, true);
+    document.addEventListener('pointerover', interceptHoverEvent, true);
+    document.addEventListener('pointerenter', interceptHoverEvent, true);
+    document.addEventListener('pointerleave', interceptHoverEvent, true);
+    
+    document.addEventListener('keydown', function(e) {
+      const target = e.target;
+      if (target) {
+        const tag = target.tagName;
+        if (!e.repeat && (e.key === 'e' || e.key === 'E') && e.metaKey && !e.ctrlKey && !e.altKey && e.shiftKey) {
+          e.preventDefault();
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'TOGGLE_SELECTION_HOTKEY' }, '*');
+          }
+          return;
+        }
+
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'TOGGLE_SELECTION_ESC_HOTKEY' }, '*');
+          }
+          return;
+        }
+      }
+
+      if (!isSelecting) return;
+
+      if (e.key === 'Escape') {
+        isSelecting = false;
+        isDragging = false;
+        disableSelectionMode();
+        removeSelectionBox();
+        
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'SELECTION_CANCELLED'
+          }, '*');
+        }
+      }
+    });
+    
+    document.addEventListener('scroll', function(e) {
+      if (isDragging && selectionBox) {
+        isDragging = false;
+        removeSelectionBox();
+      }
+    }, true);
+    
+    window.addEventListener('beforeunload', function() {
+      if (isSelecting) {
+        disableSelectionMode();
+        removeSelectionBox();
+      }
+    });
+    
+    window.addEventListener('load', function() {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'CHILD_READY',
+          data: {
+            url: window.location.href,
+            title: document.title
+          }
+        }, '*');
+      }
+    });
+    
+    let currentUrl = window.location.href;
+    
+    window.addEventListener('popstate', function() {
+      const newUrl = window.location.href;
+      if (newUrl !== currentUrl) {
+        currentUrl = newUrl;
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'URL_CHANGED',
+            data: {
+              url: newUrl,
+              title: document.title
+            }
+          }, '*');
+        }
+      }
+    });
+    
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+    
+    history.pushState = function() {
+      originalPushState.apply(history, arguments);
+      const newUrl = window.location.href;
+      if (newUrl !== currentUrl) {
+        currentUrl = newUrl;
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'URL_CHANGED',
+            data: {
+              url: newUrl,
+              title: document.title
+            }
+          }, '*');
+        }
+      }
+    };
+    
+    history.replaceState = function() {
+      originalReplaceState.apply(history, arguments);
+      const newUrl = window.location.href;
+      if (newUrl !== currentUrl) {
+        currentUrl = newUrl;
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'URL_CHANGED',
+            data: {
+              url: newUrl,
+              title: document.title
+            }
+          }, '*');
+        }
+      }
+    };
+    
+    window.addEventListener('hashchange', function() {
+      const newUrl = window.location.href;
+      if (newUrl !== currentUrl) {
+        currentUrl = newUrl;
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'URL_CHANGED',
+            data: {
+              url: newUrl,
+              title: document.title
+            }
+          }, '*');
+        }
+      }
+    });
+    
+    window.selectionAPI = {
+      startSelection: () => { 
+        isSelecting = true; 
+        enableSelectionMode();
+      },
+      stopSelection: () => { 
+        isSelecting = false; 
+        isDragging = false;
+        disableSelectionMode();
+        removeSelectionBox(); 
+      },
+      getSelectedElements: sendSelectedElements,
+      isSelecting: () => isSelecting,
+      isDragging: () => isDragging,
+      replaceDOMElement: replaceDOMElement,
+      getScreenshot: handleScreenshotRequest,
+      html2Png: html2Png
+    };
+    
+  })();
+</script>
+</body>
+</html>
