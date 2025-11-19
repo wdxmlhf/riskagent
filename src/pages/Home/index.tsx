@@ -898,7 +898,7 @@ function Home() {
 
       {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
       <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-auto">
-        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
+        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
           {/* 标题和分类Tab */}
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-3 mb-6">
@@ -974,22 +974,16 @@ function Home() {
                 <div className="absolute bottom-0 left-0 right-0 flex justify-center">
                   <button
                     onClick={() => handleFeaturePillClick('更多...')}
-                    className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-gray-800/80 via-gray-800/90 to-gray-800/80 backdrop-blur-md border-2 border-gray-700/60 hover:border-blue-500/60 rounded-2xl transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 overflow-hidden"
+                    className="group relative inline-flex items-center gap-2 px-6 py-3 bg-gray-800/70 backdrop-blur-sm hover:bg-gray-800/90 border border-gray-700/50 hover:border-blue-500/40 rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg overflow-hidden"
                   >
-                    {/* 炫酷背景效果层 */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-500/20 to-purple-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    {/* 微妙的渐变光效 */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                    {/* 动态扫光效果 */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
-
-                    {/* 边缘光晕 */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-blue-500/20 via-transparent to-purple-500/20 blur-xl"></div>
-
-                    <Grid3X3 className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-all duration-300 group-hover:rotate-180 relative z-10" />
-                    <span className="text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300 relative z-10">
+                    <Grid3X3 className="h-4 w-4 text-gray-400 group-hover:text-blue-400 transition-colors duration-300 relative z-10" />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-100 transition-colors duration-300 relative z-10">
                       探索更多 Agent
                     </span>
-                    <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
+                    <ChevronDown className="h-4 w-4 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-0.5 relative z-10" />
                   </button>
                 </div>
               )}
@@ -1046,9 +1040,10 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
           : 'border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20'
       }`}
     >
-      {/* 优化后的背景动画效果 - 移除脉冲，保留扫光 */}
+      {/* 炫酷背景动画效果 - 弱化了脚本强度 */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/6 to-transparent skew-x-12 transition-all duration-1000"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/3 to-transparent animate-pulse"></div>
+        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/8 to-transparent skew-x-12 transition-all duration-1000"></div>
       </div>
 
       {/* 卡片内容 - 横向布局，固定高度 */}
