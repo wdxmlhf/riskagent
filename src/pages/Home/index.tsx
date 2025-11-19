@@ -915,8 +915,8 @@ function Home() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                       selectedCategory === category
-                        ? 'bg-blue-600/20 text-blue-400 border border-blue-500/50 shadow-lg shadow-blue-500/20'
-                        : 'bg-gray-700/30 text-gray-400 border border-gray-600/30 hover:bg-gray-700/50 hover:text-gray-300'
+                        ? 'bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25'
+                        : 'bg-gray-900/60 text-gray-300 border border-gray-600/50 hover:bg-gray-800/80 hover:text-gray-200 hover:border-gray-500/60'
                     }`}
                   >
                     {category}
