@@ -892,7 +892,7 @@ function Home() {
           </div>
 
           {/* Agent推荐模块 */}
-          <div className="w-full max-w-[1600px] mx-auto px-4 pt-8">
+          <div className="w-full max-w-[1600px] mx-auto px-4 pt-15">
             {/* 标题区域 */}
             <div className="flex items-center justify-center space-x-3 mb-8">
               <Brain className="h-6 w-6 text-blue-400" />
