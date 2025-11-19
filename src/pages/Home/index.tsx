@@ -898,31 +898,28 @@ function Home() {
 
       {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
       <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-auto">
-        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
+        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
           {/* 标题和分类Tab */}
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-3 mb-6">
               <Brain className="h-6 w-6 text-blue-400" />
               <h2 className="text-2xl font-bold text-gray-100">推荐 Agent</h2>
-              <span className="text-sm text-gray-400 bg-gray-700/50 px-3 py-1 rounded-full">{hotAgents.length} 个可用</span>
             </div>
 
             {/* 分类Tab */}
             <div className="flex flex-wrap gap-2 justify-center">
               {['全部', ...Array.from(new Set(hotAgents.map(a => a.agentCategory)))].map((category) => {
-                const count = category === '全部' ? hotAgents.length : hotAgents.filter(a => a.agentCategory === category).length;
                 return (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                       selectedCategory === category
-                        ? 'bg-blue-600/20 text-blue-400 border border-blue-500/50 shadow-lg shadow-blue-500/20'
-                        : 'bg-gray-700/30 text-gray-400 border border-gray-600/30 hover:bg-gray-700/50 hover:text-gray-300'
+                        ? 'bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25'
+                        : 'bg-gray-900/60 text-gray-300 border border-gray-600/50 hover:bg-gray-800/80 hover:text-gray-200 hover:border-gray-500/60'
                     }`}
                   >
                     {category}
-                    <span className="ml-2 text-xs opacity-70">({count})</span>
                   </button>
                 );
               })}
@@ -977,13 +974,22 @@ function Home() {
                 <div className="absolute bottom-0 left-0 right-0 flex justify-center">
                   <button
                     onClick={() => handleFeaturePillClick('更多...')}
-                    className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-blue-500/30 hover:border-blue-500/50 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20"
+                    className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-gray-800/80 via-gray-800/90 to-gray-800/80 backdrop-blur-md border-2 border-gray-700/60 hover:border-blue-500/60 rounded-2xl transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 overflow-hidden"
                   >
-                    <Grid3X3 className="h-5 w-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
-                    <span className="text-base font-semibold text-gray-200 group-hover:text-gray-100 transition-colors">
+                    {/* 炫酷背景效果层 */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-500/20 to-purple-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    {/* 动态扫光效果 */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
+
+                    {/* 边缘光晕 */}
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-blue-500/20 via-transparent to-purple-500/20 blur-xl"></div>
+
+                    <Grid3X3 className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-all duration-300 group-hover:rotate-180 relative z-10" />
+                    <span className="text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300 relative z-10">
                       探索更多 Agent
                     </span>
-                    <ChevronDown className="h-5 w-5 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-colors" />
+                    <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
                   </button>
                 </div>
               )}
@@ -1040,10 +1046,9 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
           : 'border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20'
       }`}
     >
-      {/* 炫酷背景动画效果 */}
+      {/* 优化后的背景动画效果 - 移除脉冲，保留扫光 */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-transparent animate-pulse"></div>
-        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent skew-x-12 transition-all duration-1000"></div>
+        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/6 to-transparent skew-x-12 transition-all duration-1000"></div>
       </div>
 
       {/* 卡片内容 - 横向布局，固定高度 */}
