@@ -806,7 +806,7 @@ function Home() {
 
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="w-full mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-4 tracking-tight relative">
             Welcome To RiskAgent
           </h1>
@@ -862,7 +862,7 @@ function Home() {
           </div>
 
           {/* Agent推荐模块 */}
-          <div className="w-full max-w-[1600px] mx-auto px-4">
+          <div className="w-full max-w-[1600px] mx-auto px-4 pt-8">
             {/* 标题区域 */}
             <div className="flex items-center justify-center space-x-3 mb-8">
               <Brain className="h-6 w-6 text-blue-400" />
