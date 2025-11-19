@@ -863,35 +863,35 @@ function Home() {
               </div>
             </div>
 
-            {/* 切换Agent按钮区域 - 移到输入框下方 */}
-            <div className="mt-6">
-              <div className="flex flex-wrap gap-3 justify-center">
-                {hotAgents.slice(0, 6).map((agent) => (
-                  <button
-                    key={agent.agentCode}
-                    onClick={() => {
-                      setSelectedFeature(agent.agentName);
-                      const agentObj = {
-                        id: agent.agentCode,
-                        name: agent.agentName,
-                        description: agent.agentDescription,
-                        category: agent.agentCategory,
-                        author: agent.agentManager,
-                        gradient: 'from-blue-400 to-purple-500'
-                      };
-                      setSelectedAgent(agentObj);
-                    }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedFeature === agent.agentName
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
-                        : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
-                    }`}
-                  >
-                    {agent.agentName}
-                  </button>
-                ))}
+          {/* Agent功能选择按钮 */}
+          <div className="mb-8">
+            {hotAgentsLoading ? (
+              // 加载状态
+              <div className="flex items-center justify-center space-x-2 text-gray-400 mb-6">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                <span className="text-sm">加载Agent功能中...</span>
               </div>
-            </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Agent功能切换按钮 */}
+                <div className="flex flex-wrap justify-center gap-3">
+                  {hotAgents.slice(0, 6).map((agent) => (
+                    <FeaturePill
+                      key={agent.agentCode}
+                      title={agent.agentName}
+                      active={selectedFeature === agent.agentName}
+                      onClick={() => handleFeaturePillClick(agent.agentName)}
+                    />
+                  ))}
+                  <FeaturePill 
+                    title="更多..." 
+                    active={false}
+                    onClick={() => handleFeaturePillClick('更多...')}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
           </div>
         </div>
       </section>
