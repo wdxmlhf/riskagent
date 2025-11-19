@@ -1,4 +1,4 @@
-import { UserInfo } from '@/integrations/ambase';
+import { UserInfo } from '@ad/ambase';
 import { proxy } from 'valtio';
 
 export const UserStore = proxy({

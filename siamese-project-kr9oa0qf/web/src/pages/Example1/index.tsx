@@ -5,15 +5,7 @@ import { ambase, gotoLoginWithSSO } from '@/integrations/ambase';
 import { useSnapshot } from 'valtio';
 import { UserStore } from '@/store/UserStore';
 import { useSearchParams } from 'react-router-dom';
-export const Op = {
-  like: Symbol('like'),
-  eq: Symbol('eq'),
-  ne: Symbol('ne'),
-  gt: Symbol('gt'),
-  gte: Symbol('gte'),
-  lt: Symbol('lt'),
-  lte: Symbol('lte'),
-};
+import { Op } from '@ad/ambase';
 import AuthenticatedComponent from '@/components/AuthenticatedComponent';
 const { Title } = Typography;
 
