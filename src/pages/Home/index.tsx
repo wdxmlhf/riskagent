@@ -133,11 +133,8 @@ function Home() {
   // 添加标记用于跟踪从agentChatPage返回的情况
   const [fromAgentChatPage, setFromAgentChatPage] = useState(false);
 
-  // Agent推荐模块默认展开
-  const [isAgentSectionExpanded, setIsAgentSectionExpanded] = useState(true);
-
-  // Agent分类Tab状态
-  const [selectedCategory, setSelectedCategory] = useState<string>('全部');
+  // Agent推荐模块展开状态
+  const [isAgentSectionExpanded, setIsAgentSectionExpanded] = useState(false);
 
   const getData = async() => {
     try {
@@ -688,7 +685,7 @@ function Home() {
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img
@@ -699,7 +696,7 @@ function Home() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 flex flex-col flex-1">
+      <div className="relative z-10">
       {/* Navigation */}
       <nav className="bg-transparent border-b border-gray-700/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -808,17 +805,17 @@ function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="w-full mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-4 tracking-tight relative">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-6 tracking-tight relative">
             Welcome To RiskAgent
           </h1>
-          <p className="text-lg text-gray-300 mb-10 font-medium">
+          <p className="text-xl text-gray-300 mb-16 font-medium">
             风控不再复杂，用对话驱动决策
           </p>
 
           {/* AI Assistant Message */}
-          <div className="max-w-3xl mx-auto mb-10">
+          <div className="max-w-4xl mx-auto mb-12">
             {/* ChatGPT Style Input Area */}
             <div className="relative bg-gray-800/90 backdrop-blur-sm border border-gray-600/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
               <div className="flex items-end p-4 space-x-3">
@@ -827,13 +824,14 @@ function Home() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     //placeholder={getPlaceholderText()}
-                    className="w-full bg-transparent border-none resize-none outline-none text-gray-100 placeholder-gray-400 text-sm leading-6 py-2 font-medium transition-all duration-200 overflow-y-auto text-left"
+                    className="w-full bg-transparent border-none resize-none outline-none text-gray-100 placeholder-gray-400 text-sm leading-6 h-40 py-2 font-medium transition-all duration-200 overflow-y-auto text-left"
                     rows={1}
-                    placeholder={selectedFeature ? getAgentPlaceholderText(selectedFeature) : '请选择一个Agent或输入您的问题...'}
-                    style={{
-                      scrollbarWidth: 'none',
+                  // 使用Agent相关的占位符文本
+                  placeholder={selectedFeature ? getAgentPlaceholderText(selectedFeature) : '请选择一个Agent或输入您的问题...'}
+                    style={{ 
+                      scrollbarWidth: 'none', 
                       msOverflowStyle: 'none',
-                      height: '100px',
+                      height: '160px',
                       textAlign: 'left',
                       paddingLeft: '0px'
                     }}
@@ -862,73 +860,32 @@ function Home() {
                 </button>
               </div>
             </div>
-
-            {/* 切换Agent按钮区域 - 移到输入框下方 */}
-            <div className="mt-6">
-              <div className="flex flex-wrap gap-3 justify-center">
-                {hotAgents.slice(0, 6).map((agent) => (
-                  <button
-                    key={agent.agentCode}
-                    onClick={() => {
-                      setSelectedFeature(agent.agentName);
-                      const agentObj = {
-                        id: agent.agentCode,
-                        name: agent.agentName,
-                        description: agent.agentDescription,
-                        category: agent.agentCategory,
-                        author: agent.agentManager,
-                        gradient: 'from-blue-400 to-purple-500'
-                      };
-                      setSelectedAgent(agentObj);
-                    }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedFeature === agent.agentName
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
-                        : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
-                    }`}
-                  >
-                    {agent.agentName}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
-      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-auto">
-        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
-          {/* 标题和分类Tab */}
-          <div className="mb-8">
-            <div className="flex items-center justify-center space-x-3 mb-6">
-              <Brain className="h-6 w-6 text-blue-400" />
-              <h2 className="text-2xl font-bold text-gray-100">推荐 Agent</h2>
-            </div>
-
-            {/* 分类Tab */}
-            <div className="flex flex-wrap gap-2 justify-center">
-              {['全部', ...Array.from(new Set(hotAgents.map(a => a.agentCategory)))].map((category) => {
-                return (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      selectedCategory === category
-                        ? 'bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25'
-                        : 'bg-gray-900/60 text-gray-300 border border-gray-600/50 hover:bg-gray-800/80 hover:text-gray-200 hover:border-gray-500/60'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                );
-              })}
-            </div>
           </div>
 
-          {/* Agent卡片列表 - 固定两行高度 */}
-          <div className="min-h-[500px] relative">
-            {hotAgentsLoading ? (
+          {/* Agent推荐模块 */}
+          <div className="w-full max-w-6xl mx-auto mb-8">
+            {/* 展开/收起按钮 */}
+            <button
+              onClick={() => setIsAgentSectionExpanded(!isAgentSectionExpanded)}
+              className="w-full flex items-center justify-center space-x-2 px-6 py-4 bg-gray-800/60 backdrop-blur-sm border border-gray-600/50 rounded-xl hover:bg-gray-700/60 transition-all duration-300 group"
+            >
+              <Brain className="h-5 w-5 text-blue-400" />
+              <span className="text-lg font-semibold text-gray-200">推荐Agent</span>
+              <span className="text-sm text-gray-400">({hotAgents.length})</span>
+              {isAgentSectionExpanded ? (
+                <ChevronUp className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              ) : (
+                <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              )}
+            </button>
+
+            {/* Agent卡片列表 */}
+            <div
+              className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                isAgentSectionExpanded ? 'max-h-[2000px] opacity-100 mt-6' : 'max-h-0 opacity-0'
+              }`}
+            >
+              {hotAgentsLoading ? (
                 <div className="flex items-center justify-center space-x-2 text-gray-400 py-8">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
                   <span className="text-sm">加载热门Agent中...</span>
@@ -944,56 +901,33 @@ function Home() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start">
-                  {hotAgents
-                    .filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory)
-                    .map((agent) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {hotAgents.map((agent) => (
                     <AgentCard
                       key={agent.agentCode}
                       agent={agent}
-                      isSelected={false}
+                      isSelected={selectedFeature === agent.agentName}
                       onClick={() => {
-                        const agentObj = {
-                          id: agent.agentCode,
-                          name: agent.agentName,
-                          description: agent.agentDescription,
-                          category: agent.agentCategory,
-                          author: agent.agentManager,
-                          gradient: 'from-blue-400 to-purple-500'
-                        };
-                        setSelectedAgent(agentObj);
-                        setCurrentPage('agentChatPage');
+                        handleFeaturePillClick(agent.agentName);
+                        setIsAgentSectionExpanded(false);
                       }}
                     />
                   ))}
-                </div>
-              )}
 
-              {/* 探索更多按钮 - 固定在底部居中 */}
-              {!hotAgentsLoading && !hotAgentsError && (
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                  <button
+                  {/* 更多Agent卡片 */}
+                  <div
                     onClick={() => handleFeaturePillClick('更多...')}
-                    className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-gray-800/80 via-gray-800/90 to-gray-800/80 backdrop-blur-md border-2 border-gray-700/60 hover:border-blue-500/60 rounded-2xl transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 overflow-hidden"
+                    className="bg-gray-800/60 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 cursor-pointer hover:border-blue-400 hover:bg-gray-700/60 transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center space-y-3"
                   >
-                    {/* 炫酷背景效果层 */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-500/20 to-purple-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    {/* 动态扫光效果 */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
-
-                    {/* 边缘光晕 */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-blue-500/20 via-transparent to-purple-500/20 blur-xl"></div>
-
-                    <Grid3X3 className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-all duration-300 group-hover:rotate-180 relative z-10" />
-                    <span className="text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300 relative z-10">
-                      探索更多 Agent
-                    </span>
-                    <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
-                  </button>
+                    <Grid3X3 className="h-12 w-12 text-gray-400" />
+                    <h3 className="text-lg font-semibold text-gray-200">探索更多</h3>
+                    <p className="text-sm text-gray-400 text-center">查看完整Agent市场</p>
+                  </div>
                 </div>
               )}
+            </div>
           </div>
+
         </div>
       </section>
       </div>
@@ -1040,82 +974,49 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
   return (
     <div
       onClick={onClick}
-      className={`group relative bg-gray-800/50 backdrop-blur-sm border-2 rounded-xl cursor-pointer transition-all duration-500 overflow-hidden ${
+      className={`group relative bg-gray-800/60 backdrop-blur-sm border rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
         isSelected
-          ? 'border-blue-500 bg-blue-500/5 shadow-2xl shadow-blue-500/30 scale-[1.03]'
-          : 'border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20'
+          ? 'border-blue-400 bg-gray-700/60 shadow-xl shadow-blue-500/20'
+          : 'border-gray-600/50 hover:border-blue-400 hover:bg-gray-700/60'
       }`}
     >
-      {/* 优化后的背景动画效果 - 移除脉冲，保留扫光 */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/6 to-transparent skew-x-12 transition-all duration-1000"></div>
-      </div>
-
-      {/* 卡片内容 - 横向布局，固定高度 */}
-      <div className="p-6 flex items-start gap-6 h-[180px] relative z-10">
-        {/* 图标 */}
-        <div className="flex-shrink-0">
-          <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-all duration-500 ${
-            isSelected ? 'scale-110 rotate-3' : 'group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-2xl'
-          }`}>
-            <div className="text-white transition-transform duration-500 group-hover:scale-110">
-              {getDefaultIcon(agent.agentCategory, 'h-8 w-8')}
-            </div>
-          </div>
-        </div>
-
-        {/* 文本内容 - 固定布局 */}
-        <div className="flex-1 min-w-0 flex flex-col h-full">
-          {/* Agent名称 */}
-          <h3 className={`text-xl font-bold mb-2 transition-all duration-300 ${
-            isSelected ? 'text-blue-400' : 'text-gray-100 group-hover:text-blue-300'
-          }`}>
-            {agent.agentName}
-          </h3>
-
-          {/* Agent描述 - 固定两行高度 */}
-          <p className="text-sm text-gray-400 leading-relaxed mb-3 h-[40px] overflow-hidden" style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            textOverflow: 'ellipsis'
-          }}>
-            {agent.agentDescription}
-          </p>
-
-          {/* 底部标签 - 固定在底部 */}
-          <div className="flex items-center gap-3 mt-auto">
-            <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-300 ${
-              isSelected
-                ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
-                : 'bg-gray-700/50 text-gray-400 border border-gray-600/30 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/30'
-            }`}>
-              {agent.agentCategory}
-            </span>
-            <span className={`inline-flex items-center space-x-1.5 text-xs transition-colors duration-300 ${
-              isSelected ? 'text-gray-400' : 'text-gray-500 group-hover:text-gray-400'
-            }`}>
-              <Users className="h-3.5 w-3.5" />
-              <span>{agent.agentBelong}</span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 选中状态指示器 */}
+      {/* 选中指示器 */}
       {isSelected && (
-        <div className="absolute top-4 right-4 z-20">
-          <div className="relative">
-            <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-            <div className="absolute inset-0 w-4 h-4 bg-blue-400 rounded-full animate-ping"></div>
-          </div>
+        <div className="absolute top-3 right-3">
+          <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
         </div>
       )}
 
-      {/* 边框光效 */}
-      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/0 via-blue-400/50 to-purple-500/0 blur-sm"></div>
+      {/* 图标和渐变背景 */}
+      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg`}>
+        <div className="text-white">
+          {getDefaultIcon(agent.agentCategory, 'h-7 w-7')}
+        </div>
       </div>
+
+      {/* Agent信息 */}
+      <div className="space-y-2">
+        <h3 className="text-lg font-bold text-gray-100 group-hover:text-blue-400 transition-colors">
+          {agent.agentName}
+        </h3>
+
+        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
+          {agent.agentDescription}
+        </p>
+
+        {/* 标签信息 */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            {agent.agentCategory}
+          </span>
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-700/50 text-gray-300 border border-gray-600/50">
+            {agent.agentBelong}
+          </span>
+        </div>
+      </div>
+
+      {/* 悬浮效果 */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-300 pointer-events-none"></div>
     </div>
   );
 }
