@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3 } from 'lucide-react';
+import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3, ArrowLeft } from 'lucide-react';
 import AgentMarketplace from '../../components/AgentMarketplace.tsx';
 import PlatformIntro from '../../components/PlatformIntro.tsx';
 import ChatPage from '../../components/ChatPage.tsx';
@@ -955,7 +955,7 @@ function Home() {
                         </button>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                         {hotAgents.map((agent) => (
                           <div
                             key={agent.agentCode}
@@ -964,37 +964,28 @@ function Home() {
                               handleFeaturePillClick(agent.agentName);
                               setIsRecommendExpanded(false);
                             }}
-                            className={`group bg-gray-800/60 rounded-xl p-5 border transition-all duration-200 ${
+                            className={`group bg-gray-800/60 rounded-lg p-4 border transition-all duration-200 ${
                               agent.status === 0
                                 ? 'opacity-50 cursor-not-allowed border-gray-700/30'
-                                : 'cursor-pointer hover:bg-gray-700/60 border-gray-700/50 hover:border-blue-500/50 hover:shadow-lg hover:scale-[1.02]'
+                                : 'cursor-pointer hover:bg-gray-700/60 border-gray-700/50 hover:border-blue-500/50 hover:shadow-lg hover:scale-105'
                             } ${selectedFeature === agent.agentName ? 'ring-2 ring-blue-500' : ''}`}
                           >
-                            <div className="flex items-start space-x-3 mb-3">
-                              <div className={`w-12 h-12 bg-gradient-to-r ${
+                            <div className="flex flex-col items-center text-center space-y-2">
+                              <div className={`w-14 h-14 bg-gradient-to-r ${
                                 ['from-blue-400 to-purple-500', 'from-green-400 to-teal-500', 'from-orange-400 to-red-500', 'from-pink-400 to-purple-500'][agent.agentCode.length % 4]
-                              } rounded-xl flex items-center justify-center shadow-lg flex-shrink-0`}>
+                              } rounded-xl flex items-center justify-center shadow-lg`}>
                                 {getDefaultIcon(agent.agentCategory)}
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <h4 className="text-base font-bold text-white mb-1 truncate">{agent.agentName}</h4>
-                                <p className="text-xs text-gray-400">by {agent.agentBelong}</p>
+                              <div className="w-full">
+                                <h4 className="text-sm font-bold text-white mb-1 truncate">{agent.agentName}</h4>
+                                <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                                  {agent.agentDescription || '暂无描述'}
+                                </p>
                               </div>
                               {agent.status === 0 && (
-                                <span className="px-2 py-1 bg-red-900/40 text-red-400 text-xs rounded flex-shrink-0">
+                                <span className="px-2 py-1 bg-red-900/40 text-red-400 text-xs rounded">
                                   不可用
                                 </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-gray-300 line-clamp-2 mb-3 leading-relaxed">
-                              {agent.agentDescription || '暂无描述'}
-                            </p>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs text-gray-500">{agent.agentCategory}</span>
-                              {agent.status !== 0 && (
-                                <div className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-                                  <ArrowLeft className="h-3 w-3 text-gray-300 group-hover:text-white transform rotate-180" />
-                                </div>
                               )}
                             </div>
                           </div>
