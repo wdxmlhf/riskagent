@@ -930,7 +930,7 @@ function Home() {
           </div>
 
           {/* Agent卡片列表 - 固定两行高度 */}
-          <div className="min-h-[500px]">
+          <div className="min-h-[500px] relative">
             {hotAgentsLoading ? (
                 <div className="flex items-center justify-center space-x-2 text-gray-400 py-8">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
@@ -972,9 +972,9 @@ function Home() {
                 </div>
               )}
 
-              {/* 探索更多按钮 - 底部居中 */}
+              {/* 探索更多按钮 - 固定在底部居中 */}
               {!hotAgentsLoading && !hotAgentsError && (
-                <div className="mt-12 flex justify-center">
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center">
                   <button
                     onClick={() => handleFeaturePillClick('更多...')}
                     className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-blue-500/30 hover:border-blue-500/50 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20"
@@ -1034,49 +1034,62 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
   return (
     <div
       onClick={onClick}
-      className={`group relative bg-gray-800/50 backdrop-blur-sm border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+      className={`group relative bg-gray-800/50 backdrop-blur-sm border-2 rounded-xl cursor-pointer transition-all duration-500 overflow-hidden ${
         isSelected
           ? 'border-blue-500 bg-blue-500/5 shadow-2xl shadow-blue-500/30 scale-[1.03]'
-          : 'border-gray-700/50 hover:border-gray-600 hover:bg-gray-800/70 hover:scale-[1.01]'
+          : 'border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20'
       }`}
     >
-      {/* 卡片内容 - 横向布局 */}
-      <div className="p-6 flex items-center gap-6">
+      {/* 炫酷背景动画效果 */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-transparent animate-pulse"></div>
+        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent skew-x-12 transition-all duration-1000"></div>
+      </div>
+
+      {/* 卡片内容 - 横向布局，固定高度 */}
+      <div className="p-6 flex items-start gap-6 h-[180px] relative z-10">
         {/* 图标 */}
         <div className="flex-shrink-0">
-          <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-transform duration-300 ${
-            isSelected ? 'scale-110' : 'group-hover:scale-105'
+          <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-all duration-500 ${
+            isSelected ? 'scale-110 rotate-3' : 'group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-2xl'
           }`}>
-            <div className="text-white">
+            <div className="text-white transition-transform duration-500 group-hover:scale-110">
               {getDefaultIcon(agent.agentCategory, 'h-8 w-8')}
             </div>
           </div>
         </div>
 
-        {/* 文本内容 */}
-        <div className="flex-1 min-w-0">
+        {/* 文本内容 - 固定布局 */}
+        <div className="flex-1 min-w-0 flex flex-col h-full">
           {/* Agent名称 */}
-          <h3 className={`text-xl font-bold mb-2 transition-colors ${
-            isSelected ? 'text-blue-400' : 'text-gray-100 group-hover:text-gray-50'
+          <h3 className={`text-xl font-bold mb-2 transition-all duration-300 ${
+            isSelected ? 'text-blue-400' : 'text-gray-100 group-hover:text-blue-300'
           }`}>
             {agent.agentName}
           </h3>
 
-          {/* Agent描述 */}
-          <p className="text-sm text-gray-400 leading-relaxed mb-3 line-clamp-2">
+          {/* Agent描述 - 固定两行高度 */}
+          <p className="text-sm text-gray-400 leading-relaxed mb-3 h-[40px] overflow-hidden" style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            textOverflow: 'ellipsis'
+          }}>
             {agent.agentDescription}
           </p>
 
-          {/* 底部标签 */}
-          <div className="flex items-center gap-3">
-            <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
+          {/* 底部标签 - 固定在底部 */}
+          <div className="flex items-center gap-3 mt-auto">
+            <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-300 ${
               isSelected
                 ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
-                : 'bg-gray-700/50 text-gray-400 border border-gray-600/30'
+                : 'bg-gray-700/50 text-gray-400 border border-gray-600/30 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/30'
             }`}>
               {agent.agentCategory}
             </span>
-            <span className="inline-flex items-center space-x-1.5 text-xs text-gray-500">
+            <span className={`inline-flex items-center space-x-1.5 text-xs transition-colors duration-300 ${
+              isSelected ? 'text-gray-400' : 'text-gray-500 group-hover:text-gray-400'
+            }`}>
               <Users className="h-3.5 w-3.5" />
               <span>{agent.agentBelong}</span>
             </span>
@@ -1086,7 +1099,7 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
 
       {/* 选中状态指示器 */}
       {isSelected && (
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-4 right-4 z-20">
           <div className="relative">
             <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
             <div className="absolute inset-0 w-4 h-4 bg-blue-400 rounded-full animate-ping"></div>
@@ -1094,12 +1107,10 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
         </div>
       )}
 
-      {/* 悬浮光效 */}
-      <div className={`absolute inset-0 rounded-xl transition-opacity duration-300 pointer-events-none ${
-        isSelected
-          ? 'bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 opacity-100'
-          : 'bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 opacity-0 group-hover:opacity-100'
-      }`}></div>
+      {/* 边框光效 */}
+      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/0 via-blue-400/50 to-purple-500/0 blur-sm"></div>
+      </div>
     </div>
   );
 }
