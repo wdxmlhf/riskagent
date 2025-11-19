@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3, ArrowLeft } from 'lucide-react';
+import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3 } from 'lucide-react';
 import AgentMarketplace from '../../components/AgentMarketplace.tsx';
 import PlatformIntro from '../../components/PlatformIntro.tsx';
 import ChatPage from '../../components/ChatPage.tsx';
@@ -132,7 +132,6 @@ function Home() {
 
   // 添加标记用于跟踪从agentChatPage返回的情况
   const [fromAgentChatPage, setFromAgentChatPage] = useState(false);
-  const [isRecommendExpanded, setIsRecommendExpanded] = useState(false);
 
   const getData = async() => {
     try {
@@ -860,157 +859,43 @@ function Home() {
             </div>
           </div>
 
-          {/* Featured Agent Recommendation Section */}
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-600/40 rounded-2xl shadow-2xl overflow-hidden">
-              {/* Header */}
-              <div
-                className="flex items-center justify-between px-6 py-5 cursor-pointer hover:bg-gray-700/30 transition-all"
-                onClick={() => setIsRecommendExpanded(!isRecommendExpanded)}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <Shield className="h-5 w-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-lg font-bold text-white">精品Agent推荐</h3>
-                    <p className="text-sm text-gray-400">发现最受欢迎的智能助手</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  {!hotAgentsLoading && !hotAgentsError && (
-                    <span className="text-sm text-gray-400 font-medium">{hotAgents.length} 个可用</span>
-                  )}
-                  <button className="text-gray-400 hover:text-white transition-colors">
-                    {isRecommendExpanded ? (
-                      <svg className="w-6 h-6 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    ) : (
-                      <svg className="w-6 h-6 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
+          {/* Feature Pills */}
+          <div className="flex flex-wrap justify-center gap-3 mb-16">
+            {hotAgentsLoading ? (
+              // 加载状态
+              <div className="flex items-center space-x-2 text-gray-400">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                <span className="text-sm">加载热门Agent中...</span>
               </div>
-
-              {/* Quick Access Pills - Always Visible */}
-              <div className="px-6 pb-4">
-                <div className="flex flex-wrap gap-2">
-                  {hotAgentsLoading ? (
-                    <div className="flex items-center space-x-2 text-gray-400 py-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                      <span className="text-sm">加载中...</span>
-                    </div>
-                  ) : hotAgentsError ? (
-                    <div className="flex items-center space-x-2 py-2">
-                      <span className="text-red-400 text-sm">加载失败</span>
-                      <button onClick={fetchHotAgents} className="text-blue-400 hover:text-blue-300 text-xs underline">
-                        重试
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      {hotAgents.slice(0, 4).map((agent) => (
-                        <button
-                          key={agent.agentCode}
-                          onClick={() => handleFeaturePillClick(agent.agentName)}
-                          className={`px-4 py-2 rounded-full text-xs font-semibold transition-all hover:scale-105 ${
-                            selectedFeature === agent.agentName
-                              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg'
-                              : 'bg-gray-700/60 text-gray-300 hover:bg-gray-600'
-                          }`}
-                        >
-                          {agent.agentName}
-                        </button>
-                      ))}
-                      <button
-                        onClick={() => handleFeaturePillClick('更多...')}
-                        className="px-4 py-2 rounded-full text-xs font-semibold bg-gray-700/60 text-gray-300 hover:bg-gray-600 hover:scale-105 transition-all"
-                      >
-                        更多...
-                      </button>
-                    </>
-                  )}
-                </div>
+            ) : hotAgentsError ? (
+              // 错误状态
+              <div className="flex flex-col items-center space-y-2">
+                <span className="text-red-400 text-sm">加载失败: {hotAgentsError}</span>
+                <button
+                  onClick={fetchHotAgents}
+                  className="text-blue-400 hover:text-blue-300 text-xs underline"
+                >
+                  重试
+                </button>
               </div>
-
-              {/* Expanded Content */}
-              {isRecommendExpanded && (
-                <div className="border-t border-gray-700/50 bg-gray-900/40 animate-slide-in">
-                  <div className="px-6 py-6">
-                    {hotAgentsLoading ? (
-                      <div className="flex items-center justify-center py-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                      </div>
-                    ) : hotAgentsError ? (
-                      <div className="text-center py-12">
-                        <div className="text-red-400 mb-4">{hotAgentsError}</div>
-                        <button
-                          onClick={fetchHotAgents}
-                          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all"
-                        >
-                          重新加载
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        {hotAgents.map((agent) => (
-                          <div
-                            key={agent.agentCode}
-                            onClick={() => {
-                              if (agent.status === 0) return;
-                              handleFeaturePillClick(agent.agentName);
-                              setIsRecommendExpanded(false);
-                            }}
-                            className={`group bg-gray-800/60 rounded-lg p-4 border transition-all duration-200 ${
-                              agent.status === 0
-                                ? 'opacity-50 cursor-not-allowed border-gray-700/30'
-                                : 'cursor-pointer hover:bg-gray-700/60 border-gray-700/50 hover:border-blue-500/50 hover:shadow-lg hover:scale-105'
-                            } ${selectedFeature === agent.agentName ? 'ring-2 ring-blue-500' : ''}`}
-                          >
-                            <div className="flex flex-col items-center text-center space-y-2">
-                              <div className={`w-14 h-14 bg-gradient-to-r ${
-                                ['from-blue-400 to-purple-500', 'from-green-400 to-teal-500', 'from-orange-400 to-red-500', 'from-pink-400 to-purple-500'][agent.agentCode.length % 4]
-                              } rounded-xl flex items-center justify-center shadow-lg`}>
-                                {getDefaultIcon(agent.agentCategory)}
-                              </div>
-                              <div className="w-full">
-                                <h4 className="text-sm font-bold text-white mb-1 truncate">{agent.agentName}</h4>
-                                <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
-                                  {agent.agentDescription || '暂无描述'}
-                                </p>
-                              </div>
-                              {agent.status === 0 && (
-                                <span className="px-2 py-1 bg-red-900/40 text-red-400 text-xs rounded">
-                                  不可用
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* View All Button */}
-                    {!hotAgentsLoading && !hotAgentsError && hotAgents.length > 0 && (
-                      <div className="mt-6 text-center">
-                        <button
-                          onClick={() => {
-                            setCurrentPage('agent-marketplace');
-                          }}
-                          className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold transition-all hover:scale-105 shadow-lg"
-                        >
-                          <Grid3X3 className="h-4 w-4" />
-                          <span>浏览全部Agent</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+            ) : (
+              // 动态渲染热门Agent
+              <>
+                {hotAgents.map((agent) => (
+                  <FeaturePill
+                    key={agent.agentCode}
+                    title={agent.agentName}
+                    active={selectedFeature === agent.agentName}
+                    onClick={() => handleFeaturePillClick(agent.agentName)}
+                  />
+                ))}
+              </>
+            )}
+            <FeaturePill 
+              title="更多..." 
+              active={false}
+              onClick={() => handleFeaturePillClick('更多...')}
+            />
           </div>
 
         </div>
