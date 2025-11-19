@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3 } from 'lucide-react';
+import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3, ChevronDown, ChevronUp } from 'lucide-react';
 import AgentMarketplace from '../../components/AgentMarketplace.tsx';
 import PlatformIntro from '../../components/PlatformIntro.tsx';
 import ChatPage from '../../components/ChatPage.tsx';
@@ -132,6 +132,9 @@ function Home() {
 
   // 添加标记用于跟踪从agentChatPage返回的情况
   const [fromAgentChatPage, setFromAgentChatPage] = useState(false);
+
+  // Agent推荐模块展开状态
+  const [isAgentSectionExpanded, setIsAgentSectionExpanded] = useState(false);
 
   const getData = async() => {
     try {
@@ -859,43 +862,70 @@ function Home() {
             </div>
           </div>
 
-          {/* Feature Pills */}
-          <div className="flex flex-wrap justify-center gap-3 mb-16">
-            {hotAgentsLoading ? (
-              // 加载状态
-              <div className="flex items-center space-x-2 text-gray-400">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                <span className="text-sm">加载热门Agent中...</span>
-              </div>
-            ) : hotAgentsError ? (
-              // 错误状态
-              <div className="flex flex-col items-center space-y-2">
-                <span className="text-red-400 text-sm">加载失败: {hotAgentsError}</span>
-                <button
-                  onClick={fetchHotAgents}
-                  className="text-blue-400 hover:text-blue-300 text-xs underline"
-                >
-                  重试
-                </button>
-              </div>
-            ) : (
-              // 动态渲染热门Agent
-              <>
-                {hotAgents.map((agent) => (
-                  <FeaturePill
-                    key={agent.agentCode}
-                    title={agent.agentName}
-                    active={selectedFeature === agent.agentName}
-                    onClick={() => handleFeaturePillClick(agent.agentName)}
-                  />
-                ))}
-              </>
-            )}
-            <FeaturePill 
-              title="更多..." 
-              active={false}
-              onClick={() => handleFeaturePillClick('更多...')}
-            />
+          {/* Agent推荐模块 */}
+          <div className="w-full max-w-6xl mx-auto mb-8">
+            {/* 展开/收起按钮 */}
+            <button
+              onClick={() => setIsAgentSectionExpanded(!isAgentSectionExpanded)}
+              className="w-full flex items-center justify-center space-x-2 px-6 py-4 bg-gray-800/60 backdrop-blur-sm border border-gray-600/50 rounded-xl hover:bg-gray-700/60 transition-all duration-300 group"
+            >
+              <Brain className="h-5 w-5 text-blue-400" />
+              <span className="text-lg font-semibold text-gray-200">推荐Agent</span>
+              <span className="text-sm text-gray-400">({hotAgents.length})</span>
+              {isAgentSectionExpanded ? (
+                <ChevronUp className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              ) : (
+                <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              )}
+            </button>
+
+            {/* Agent卡片列表 */}
+            <div
+              className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                isAgentSectionExpanded ? 'max-h-[2000px] opacity-100 mt-6' : 'max-h-0 opacity-0'
+              }`}
+            >
+              {hotAgentsLoading ? (
+                <div className="flex items-center justify-center space-x-2 text-gray-400 py-8">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                  <span className="text-sm">加载热门Agent中...</span>
+                </div>
+              ) : hotAgentsError ? (
+                <div className="flex flex-col items-center space-y-3 py-8">
+                  <span className="text-red-400 text-sm">加载失败: {hotAgentsError}</span>
+                  <button
+                    onClick={fetchHotAgents}
+                    className="text-blue-400 hover:text-blue-300 text-xs underline"
+                  >
+                    重试
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {hotAgents.map((agent) => (
+                    <AgentCard
+                      key={agent.agentCode}
+                      agent={agent}
+                      isSelected={selectedFeature === agent.agentName}
+                      onClick={() => {
+                        handleFeaturePillClick(agent.agentName);
+                        setIsAgentSectionExpanded(false);
+                      }}
+                    />
+                  ))}
+
+                  {/* 更多Agent卡片 */}
+                  <div
+                    onClick={() => handleFeaturePillClick('更多...')}
+                    className="bg-gray-800/60 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 cursor-pointer hover:border-blue-400 hover:bg-gray-700/60 transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center space-y-3"
+                  >
+                    <Grid3X3 className="h-12 w-12 text-gray-400" />
+                    <h3 className="text-lg font-semibold text-gray-200">探索更多</h3>
+                    <p className="text-sm text-gray-400 text-center">查看完整Agent市场</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
         </div>
@@ -906,37 +936,87 @@ function Home() {
 }
 
 // 根据Agent分类获取默认图标
-function getDefaultIcon(category: string): React.ReactNode {
+function getDefaultIcon(category: string, size: string = 'h-4 w-4'): React.ReactNode {
   const iconMap: Record<string, React.ReactNode> = {
-    '风险感知Agent': <Shield className="h-4 w-4" />,
-    '风险归因Agent': <Search className="h-4 w-4" />,
-    '风险识别Agent': <BarChart3 className="h-4 w-4" />,
-    '数据Agent': <Brain className="h-4 w-4" />,
-    '通用助手': <MessageSquare className="h-4 w-4" />,
-    '编程助手': <Grid3X3 className="h-4 w-4" />,
-    '内容创作': <Users className="h-4 w-4" />
+    '风险感知Agent': <Shield className={size} />,
+    '风险归因Agent': <Search className={size} />,
+    '风险识别Agent': <BarChart3 className={size} />,
+    '数据Agent': <Brain className={size} />,
+    '通用助手': <MessageSquare className={size} />,
+    '编程助手': <Grid3X3 className={size} />,
+    '内容创作': <Users className={size} />
   };
 
-  return iconMap[category] || <Brain className="h-4 w-4" />;
+  return iconMap[category] || <Brain className={size} />;
 }
 
-interface FeaturePillProps {
-  icon?: React.ReactNode;
-  title: string;
-  active?: boolean;
-  onClick?: () => void;
+// Agent卡片组件
+interface AgentCardProps {
+  agent: HotAgentInfo;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
-function FeaturePill({ icon, title, active = false, onClick }: FeaturePillProps) {
+function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
+  // 获取渐变色
+  const gradientColors = [
+    'from-blue-500 to-purple-600',
+    'from-emerald-500 to-teal-600',
+    'from-orange-500 to-red-600',
+    'from-pink-500 to-rose-600',
+    'from-indigo-500 to-blue-600',
+    'from-cyan-500 to-blue-600',
+  ];
+
+  const gradientIndex = agent.agentCode.charCodeAt(0) % gradientColors.length;
+  const gradient = gradientColors[gradientIndex];
+
   return (
-    <div className={`inline-flex items-center space-x-2 px-5 py-3 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer hover:scale-105 ${
-      active 
-        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg border border-blue-400' 
-        : 'bg-gray-700/80 backdrop-blur-sm text-gray-200 border border-gray-600/50 hover:bg-gray-600 hover:shadow-lg hover:border-blue-400'
-    }`}
-    onClick={onClick}>
-      {icon}
-      <span>{title}</span>
+    <div
+      onClick={onClick}
+      className={`group relative bg-gray-800/60 backdrop-blur-sm border rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
+        isSelected
+          ? 'border-blue-400 bg-gray-700/60 shadow-xl shadow-blue-500/20'
+          : 'border-gray-600/50 hover:border-blue-400 hover:bg-gray-700/60'
+      }`}
+    >
+      {/* 选中指示器 */}
+      {isSelected && (
+        <div className="absolute top-3 right-3">
+          <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+        </div>
+      )}
+
+      {/* 图标和渐变背景 */}
+      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg`}>
+        <div className="text-white">
+          {getDefaultIcon(agent.agentCategory, 'h-7 w-7')}
+        </div>
+      </div>
+
+      {/* Agent信息 */}
+      <div className="space-y-2">
+        <h3 className="text-lg font-bold text-gray-100 group-hover:text-blue-400 transition-colors">
+          {agent.agentName}
+        </h3>
+
+        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
+          {agent.agentDescription}
+        </p>
+
+        {/* 标签信息 */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            {agent.agentCategory}
+          </span>
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-700/50 text-gray-300 border border-gray-600/50">
+            {agent.agentBelong}
+          </span>
+        </div>
+      </div>
+
+      {/* 悬浮效果 */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-300 pointer-events-none"></div>
     </div>
   );
 }
