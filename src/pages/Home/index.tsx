@@ -929,8 +929,8 @@ function Home() {
             </div>
           </div>
 
-          {/* Agent卡片列表 - 添加内边距 */}
-          <div>
+          {/* Agent卡片列表 - 固定两行高度 */}
+          <div className="min-h-[500px]">
             {hotAgentsLoading ? (
                 <div className="flex items-center justify-center space-x-2 text-gray-400 py-8">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
@@ -947,7 +947,7 @@ function Home() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start">
                   {hotAgents
                     .filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory)
                     .map((agent) => (
