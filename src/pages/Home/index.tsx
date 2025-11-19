@@ -904,13 +904,11 @@ function Home() {
             <div className="flex items-center justify-center space-x-3 mb-6">
               <Brain className="h-6 w-6 text-blue-400" />
               <h2 className="text-2xl font-bold text-gray-100">推荐 Agent</h2>
-              <span className="text-sm text-gray-400 bg-gray-700/50 px-3 py-1 rounded-full">{hotAgents.length} 个可用</span>
             </div>
 
             {/* 分类Tab */}
             <div className="flex flex-wrap gap-2 justify-center">
               {['全部', ...Array.from(new Set(hotAgents.map(a => a.agentCategory)))].map((category) => {
-                const count = category === '全部' ? hotAgents.length : hotAgents.filter(a => a.agentCategory === category).length;
                 return (
                   <button
                     key={category}
@@ -922,7 +920,6 @@ function Home() {
                     }`}
                   >
                     {category}
-                    <span className="ml-2 text-xs opacity-70">({count})</span>
                   </button>
                 );
               })}
@@ -977,13 +974,16 @@ function Home() {
                 <div className="absolute bottom-0 left-0 right-0 flex justify-center">
                   <button
                     onClick={() => handleFeaturePillClick('更多...')}
-                    className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-blue-500/30 hover:border-blue-500/50 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20"
+                    className="group relative inline-flex items-center gap-2 px-6 py-3 bg-gray-800/70 backdrop-blur-sm hover:bg-gray-800/90 border border-gray-700/50 hover:border-blue-500/40 rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg overflow-hidden"
                   >
-                    <Grid3X3 className="h-5 w-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
-                    <span className="text-base font-semibold text-gray-200 group-hover:text-gray-100 transition-colors">
+                    {/* 微妙的渐变光效 */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    <Grid3X3 className="h-4 w-4 text-gray-400 group-hover:text-blue-400 transition-colors duration-300 relative z-10" />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-100 transition-colors duration-300 relative z-10">
                       探索更多 Agent
                     </span>
-                    <ChevronDown className="h-5 w-5 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-colors" />
+                    <ChevronDown className="h-4 w-4 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-0.5 relative z-10" />
                   </button>
                 </div>
               )}
@@ -1040,10 +1040,10 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
           : 'border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20'
       }`}
     >
-      {/* 炫酷背景动画效果 */}
+      {/* 炫酷背景动画效果 - 弱化了脚本强度 */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-transparent animate-pulse"></div>
-        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent skew-x-12 transition-all duration-1000"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/3 to-transparent animate-pulse"></div>
+        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/8 to-transparent skew-x-12 transition-all duration-1000"></div>
       </div>
 
       {/* 卡片内容 - 横向布局，固定高度 */}
