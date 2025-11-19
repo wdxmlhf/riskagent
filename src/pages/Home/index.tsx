@@ -896,9 +896,9 @@ function Home() {
         </div>
       </section>
 
-      {/* Agent推荐模块 - 独立section，有自己的背景色 */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800/30 relative">
-        <div className="w-full max-w-[1600px] mx-auto">
+      {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
+      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8">
+        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm rounded-t-3xl shadow-2xl pt-12 pb-20">
           {/* 标题和分类Tab */}
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-3 mb-6">
@@ -969,35 +969,22 @@ function Home() {
                       }}
                     />
                   ))}
+                </div>
+              )}
 
-                  {/* 更多Agent卡片 */}
-                  <div
+              {/* 探索更多按钮 - 底部居中 */}
+              {!hotAgentsLoading && !hotAgentsError && (
+                <div className="mt-12 flex justify-center">
+                  <button
                     onClick={() => handleFeaturePillClick('更多...')}
-                    className="group relative bg-gray-800/50 backdrop-blur-sm border-2 border-gray-700/50 rounded-xl cursor-pointer hover:border-gray-600 hover:bg-gray-800/70 hover:scale-[1.01] transition-all duration-300"
+                    className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-blue-500/30 hover:border-blue-500/50 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20"
                   >
-                    {/* 卡片内容 - 横向布局 */}
-                    <div className="p-6 flex items-center justify-center gap-6">
-                      <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                        <Grid3X3 className="h-8 w-8 text-gray-300" />
-                      </div>
-
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-100 group-hover:text-gray-50 transition-colors mb-2">
-                          探索更多
-                        </h3>
-                        <p className="text-sm text-gray-400 leading-relaxed">
-                          查看完整 Agent 市场
-                        </p>
-                      </div>
-
-                      <div className="flex-shrink-0">
-                        <ChevronDown className="h-5 w-5 text-gray-500 rotate-[-90deg]" />
-                      </div>
-                    </div>
-
-                    {/* 悬浮光效 */}
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-300 pointer-events-none"></div>
-                  </div>
+                    <Grid3X3 className="h-5 w-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                    <span className="text-base font-semibold text-gray-200 group-hover:text-gray-100 transition-colors">
+                      探索更多 Agent
+                    </span>
+                    <ChevronDown className="h-5 w-5 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-colors" />
+                  </button>
                 </div>
               )}
           </div>
