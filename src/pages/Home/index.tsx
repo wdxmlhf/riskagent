@@ -912,7 +912,7 @@ function Home() {
       </section>
 
       {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
-      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-13">
+      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-23">
         <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
           {/* 标题和分类Tab */}
           <div className="mb-8">
