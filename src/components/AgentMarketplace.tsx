@@ -906,7 +906,7 @@ export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketpl
                       <div className={`w-10 h-10 bg-gradient-to-r ${agent.gradient} rounded-lg flex-shrink-0`}></div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-base font-semibold text-white truncate">{agent.name}</h3>
+                          <h3 className="text-sm font-semibold text-white truncate">{agent.name}</h3>
                           {selectedCategory === 'all' && (
                             <span className="px-2 py-0.5 bg-gray-700/40 text-gray-400 text-xs rounded flex-shrink-0">
                               {getCategoryDisplayName(agent.category)}
