@@ -295,6 +295,7 @@ function Home() {
   const getPlaceholderText = () => {
     const placeholderTexts = {
       '流量分析': `同学你好，我是您的流量质量case排查助手，请您按照以下格式输入待排查信息查询对象：
+
 查询对象: XXXXXXXX
 对象类型: 账户id/卖家id/作者id  
 查询周期: 202508XX-202508XX`,
