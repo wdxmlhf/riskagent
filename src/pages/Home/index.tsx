@@ -1138,11 +1138,6 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
           </div>
         </div>
       )}
-
-      {/* 边框光效 */}
-      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/0 via-blue-400/50 to-purple-500/0 blur-sm"></div>
-      </div>
     </div>
   );
 }
