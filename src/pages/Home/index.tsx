@@ -810,7 +810,7 @@ function Home() {
       {/* Hero Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-6 tracking-tight relative">
+          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-4 tracking-tight relative">
             Welcome To RiskAgent
           </h1>
           <p className="text-xl text-gray-300 mb-16 font-medium">
