@@ -9,7 +9,6 @@ import ExitPlugin from './babel-plugins/vite-plugin-exit';
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const isProd = mode === 'production'
-  const cdnUrl = '//p2-ad.adkwai.com/bs2/ad-automate-cdn/project/177/'
 
   console.log('mode', mode, 'command', command)
 
@@ -26,7 +25,7 @@ export default defineConfig(({ command, mode }) => {
   })
 
   return {
-    base: isProd ? cdnUrl : '/',
+    base: './',
     plugins: [
       reactWithLoc,
       isProd ?  ExitPlugin() : null,
