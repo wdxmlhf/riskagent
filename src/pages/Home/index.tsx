@@ -951,7 +951,7 @@ function Home() {
                   onClick={() => handleFeaturePillClick('更多...')}
                   className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-200 group"
                 >
-                  <span className="text-sm font-medium">浏览全部</span>
+                  <span className="text-sm font-medium">探索更多</span>
                   <ChevronDown className="h-4 w-4 rotate-[-90deg] transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </div>
