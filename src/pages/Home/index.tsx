@@ -960,7 +960,7 @@ function Home() {
                   {/* 扫光效果 */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-                  <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300 relative z-10">浏览全部</span>
+                  <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300 relative z-10">探索更多</span>
                   <ChevronDown className="h-4 w-4 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
                 </button>
               </div>
