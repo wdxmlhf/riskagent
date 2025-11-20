@@ -911,38 +911,53 @@ function Home() {
         </div>
       </section>
 
-      {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
-      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-23">
-        <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
-          {/* 标题和分类Tab */}
-          <div className="mb-8">
-            <div className="flex items-center justify-center space-x-3 mb-6">
-              <Brain className="h-6 w-6 text-blue-400" />
-              <h2 className="text-2xl font-bold text-gray-100">热门 Agent</h2>
-            </div>
+      {/* Agent推荐模块 - 透明背景 */}
+      <section className="relative px-4 sm:px-6 lg:px-8 mt-16 pb-8">
+        <div className="max-w-7xl mx-auto">
+          {/* 标题栏 - 左对齐布局 */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              {/* 左侧：图标+标题 */}
+              <div className="flex items-center space-x-3">
+                <Brain className="h-6 w-6 text-blue-400" />
+                <h2 className="text-2xl font-bold text-gray-100">热门 Agent</h2>
+              </div>
 
-            {/* 分类Tab */}
-            <div className="flex flex-wrap gap-2 justify-center">
-              {['全部', ...Array.from(new Set(hotAgents.map(a => a.agentCategory)))].map((category) => {
-                return (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      selectedCategory === category
-                        ? 'bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25'
-                        : 'bg-gray-900/60 text-gray-300 border border-gray-600/50 hover:bg-gray-800/80 hover:text-gray-200 hover:border-gray-500/60'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                );
-              })}
+              {/* 右侧：分类Tab + 探索更多链接 */}
+              <div className="flex items-center gap-4 flex-wrap">
+                {/* 分类Tab */}
+                <div className="flex flex-wrap gap-2">
+                  {['全部', ...Array.from(new Set(hotAgents.map(a => a.agentCategory)))].map((category) => {
+                    return (
+                      <button
+                        key={category}
+                        onClick={() => setSelectedCategory(category)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          selectedCategory === category
+                            ? 'bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25'
+                            : 'bg-gray-800/60 text-gray-300 border border-gray-600/50 hover:bg-gray-700/80 hover:text-gray-200 hover:border-gray-500/60'
+                        }`}
+                      >
+                        {category}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* 探索更多链接 */}
+                <button
+                  onClick={() => handleFeaturePillClick('更多...')}
+                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-200 group"
+                >
+                  <span className="text-sm font-medium">浏览全部</span>
+                  <ChevronDown className="h-4 w-4 rotate-[-90deg] transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Agent卡片列表 - 固定两行高度 */}
-          <div className="min-h-[500px] relative">
+          {/* Agent卡片列表 - 两行展示 + 渐变阴影 */}
+          <div className="relative">
             {hotAgentsLoading ? (
                 <div className="flex items-center justify-center space-x-2 text-gray-400 py-8">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
@@ -959,56 +974,56 @@ function Home() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start">
-                  {hotAgents
-                    .filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory)
-                    .map((agent) => (
-                    <AgentCard
-                      key={agent.agentCode}
-                      agent={agent}
-                      isSelected={false}
-                      onClick={() => {
-                        const agentObj = {
-                          id: agent.agentCode,
-                          name: agent.agentName,
-                          description: agent.agentDescription,
-                          category: agent.agentCategory,
-                          author: agent.agentManager,
-                          gradient: 'from-blue-400 to-purple-500'
-                        };
-                        setSelectedAgent(agentObj);
-                        setCurrentPage('agentChatPage');
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
+                <>
+                  {/* 卡片网格 - 只显示6个（两行） */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative">
+                    {hotAgents
+                      .filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory)
+                      .slice(0, 6)
+                      .map((agent) => (
+                      <AgentCard
+                        key={agent.agentCode}
+                        agent={agent}
+                        isSelected={false}
+                        onClick={() => {
+                          const agentObj = {
+                            id: agent.agentCode,
+                            name: agent.agentName,
+                            description: agent.agentDescription,
+                            category: agent.agentCategory,
+                            author: agent.agentManager,
+                            gradient: 'from-blue-400 to-purple-500'
+                          };
+                          setSelectedAgent(agentObj);
+                          setCurrentPage('agentChatPage');
+                        }}
+                      />
+                    ))}
+                  </div>
 
-              {/* 探索更多按钮 - 固定在底部居中 */}
-              {!hotAgentsLoading && !hotAgentsError && (
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                  <button
-                    onClick={() => handleFeaturePillClick('更多...')}
-                    className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-gray-800/80 via-gray-800/90 to-gray-800/80 backdrop-blur-md border-2 border-gray-700/60 hover:border-blue-500/60 rounded-2xl transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 overflow-hidden"
-                  >
-                    {/* 炫酷背景效果层 */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-500/20 to-purple-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    {/* 动态扫光效果 */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
-
-                    {/* 边缘光晕 */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-blue-500/20 via-transparent to-purple-500/20 blur-xl"></div>
-
-                    <Grid3X3 className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-all duration-300 group-hover:rotate-180 relative z-10" />
-                    <span className="text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300 relative z-10">
-                      探索更多 Agent
-                    </span>
-                    <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
-                  </button>
-                </div>
+                  {/* 渐变阴影效果 - 暗示更多内容 */}
+                  {hotAgents.filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory).length > 6 && (
+                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent pointer-events-none"></div>
+                  )}
+                </>
               )}
           </div>
+
+          {/* 探索更多按钮 - 页面底部右侧 */}
+          {!hotAgentsLoading && !hotAgentsError && hotAgents.filter(agent => selectedCategory === '全部' || agent.agentCategory === selectedCategory).length > 6 && (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => handleFeaturePillClick('更多...')}
+                className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gray-800/80 backdrop-blur-md border border-gray-700/60 hover:border-blue-500/60 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-blue-500/30"
+              >
+                <Grid3X3 className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors duration-300" />
+                <span className="text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300">
+                  探索更多 Agent
+                </span>
+                <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
       </div>
