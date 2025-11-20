@@ -912,7 +912,7 @@ function Home() {
       </section>
 
       {/* Agent推荐模块 - 透明背景 */}
-      <section className="relative px-4 sm:px-6 lg:px-8 mt-16 pb-8">
+      <section className="relative px-4 sm:px-6 lg:px-8 mt-10 pb-8">
         <div className="max-w-7xl mx-auto">
           {/* 标题栏 - 左对齐布局 */}
           <div className="mb-10">
