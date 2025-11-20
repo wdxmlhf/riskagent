@@ -914,8 +914,8 @@ function Home() {
       </section>
 
       {/* Agent推荐模块 - 透明背景 */}
-      <section className="relative px-4 sm:px-6 lg:px-8 mt-2 pb-8">
-        <div className="w-full max-w-[95%] sm:max-w-[85%] lg:max-w-[80%] xl:max-w-[75%] mx-auto">
+      <section className="relative px-4 sm:px-6 lg:px-8 mt-5 pb-8">
+        <div className="max-w-7xl mx-auto">
           {/* 标题栏 - 左对齐布局 */}
           <div className="mb-10">
             <div className="flex items-center justify-between flex-wrap gap-4">
@@ -960,7 +960,7 @@ function Home() {
                   {/* 扫光效果 */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-                  <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300 relative z-10">探索更多</span>
+                  <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300 relative z-10">浏览全部</span>
                   <ChevronDown className="h-4 w-4 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
                 </button>
               </div>
