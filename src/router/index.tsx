@@ -20,6 +20,9 @@ const AppRouter = () => {
         <Route path="/example1" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Example1 /></Layout></AuthenticatedLayout>} />
         {/* 包含权限检查的页面示例，allowAnonymous表示是否可以匿名访问 默认允许匿名访问；allowRoles表示可以访问页面的角色，未定义时任何角色均可访问 */}
         <Route path="/example2_with_auth" element={<AuthenticatedLayout autoLogin={true} authParams={{ allowAnonymous: false, allowRoles: ['admin'] }}><Example2 /></AuthenticatedLayout>} />
+
+        {/* 捕获所有未匹配的路由，重定向到首页 */}
+        <Route path="*" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
       </Routes>
     </HashRouter>
   );
