@@ -912,13 +912,13 @@ function Home() {
       </section>
 
       {/* Agent推荐模块 - 独立section，上圆角下方紧贴底部 */}
-      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-auto">
+      <section className="relative flex justify-center px-4 sm:px-6 lg:px-8 mt-13">
         <div className="w-[75%] bg-gradient-to-b from-gray-800/40 to-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-t-3xl shadow-2xl pt-12 pb-20 px-8">
           {/* 标题和分类Tab */}
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-3 mb-6">
               <Brain className="h-6 w-6 text-blue-400" />
-              <h2 className="text-2xl font-bold text-gray-100">推荐 Agent</h2>
+              <h2 className="text-2xl font-bold text-gray-100">热门 Agent</h2>
             </div>
 
             {/* 分类Tab */}
