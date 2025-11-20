@@ -915,7 +915,7 @@ function Home() {
 
       {/* Agent推荐模块 - 透明背景 */}
       <section className="relative px-4 sm:px-6 lg:px-8 mt-5 pb-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full max-w-[95%] sm:max-w-[85%] lg:max-w-[80%] xl:max-w-[75%] mx-auto">
           {/* 标题栏 - 左对齐布局 */}
           <div className="mb-10">
             <div className="flex items-center justify-between flex-wrap gap-4">
