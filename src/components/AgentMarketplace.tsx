@@ -916,7 +916,7 @@ export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketpl
                         <p className="text-xs text-gray-400 mb-1">by {agent.author}</p>
                       </div>
                     </div>
-                    <p className="text-gray-200 text-sm leading-relaxed line-clamp-2 mb-4 font-medium">
+                    <p className="text-gray-300 text-sm leading-relaxed line-clamp-2 mb-4">
                       {agent.description}
                     </p>
                     <div className="flex items-center justify-between">
