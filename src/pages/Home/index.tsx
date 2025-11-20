@@ -1076,10 +1076,7 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
           : 'border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20'
       }`}
     >
-      {/* 优化后的背景动画效果 - 移除脉冲，保留扫光 */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute -inset-full group-hover:inset-0 bg-gradient-to-r from-transparent via-blue-400/6 to-transparent skew-x-12 transition-all duration-1000"></div>
-      </div>
+
 
       {/* 卡片内容 - 横向布局，固定高度 */}
       <div className="p-6 flex items-start gap-6 h-[180px] relative z-10">
