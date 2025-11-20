@@ -808,17 +808,17 @@ function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="w-full mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-4 tracking-tight relative">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent mb-6 tracking-tight relative">
             Welcome To RiskAgent
           </h1>
-          <p className="text-lg text-gray-300 mb-10 font-medium">
+          <p className="text-xl text-gray-300 mb-16 font-medium">
             风控不再复杂，用对话驱动决策
           </p>
 
           {/* AI Assistant Message */}
-          <div className="max-w-3xl mx-auto mb-10">
+          <div className="max-w-4xl mx-auto mb-12">
             {/* ChatGPT Style Input Area */}
             <div className="relative bg-gray-800/90 backdrop-blur-sm border border-gray-600/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
               <div className="flex items-end p-4 space-x-3">
@@ -826,20 +826,19 @@ function Home() {
                   <textarea
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    //placeholder={getPlaceholderText()}
-                    className="w-full bg-transparent border-none resize-none outline-none text-gray-100 placeholder-gray-400 text-sm leading-6 py-2 font-medium transition-all duration-200 overflow-y-auto text-left"
+                    className="w-full bg-transparent border-none resize-none outline-none text-gray-100 placeholder-gray-400 text-sm leading-6 h-40 py-2 font-medium transition-all duration-200 overflow-y-auto text-left"
                     rows={1}
                     placeholder={selectedFeature ? getAgentPlaceholderText(selectedFeature) : '请选择一个Agent或输入您的问题...'}
                     style={{
                       scrollbarWidth: 'none',
                       msOverflowStyle: 'none',
-                      height: '100px',
+                      height: '160px',
                       textAlign: 'left',
                       paddingLeft: '0px'
                     }}
                   />
                   <style jsx>{`
-                    textarea::-webkit-scrollbar {
+                   textarea::-webkit-scrollbar {
                       width: 6px;
                     }
                     textarea::-webkit-scrollbar-track {
@@ -854,7 +853,7 @@ function Home() {
                     }
                   `}</style>
                 </div>
-                <button 
+                <button
                   onClick={handleSendMessage}
                   className="flex-shrink-0 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full transition-all duration-200 hover:scale-105 shadow-lg self-end"
                 >
@@ -862,36 +861,52 @@ function Home() {
                 </button>
               </div>
             </div>
+          </div>
 
-            {/* 切换Agent按钮区域 - 移到输入框下方 */}
-            <div className="mt-6">
-              <div className="flex flex-wrap gap-3 justify-center">
-                {hotAgents.slice(0, 6).map((agent) => (
-                  <button
-                    key={agent.agentCode}
-                    onClick={() => {
-                      setSelectedFeature(agent.agentName);
-                      const agentObj = {
-                        id: agent.agentCode,
-                        name: agent.agentName,
-                        description: agent.agentDescription,
-                        category: agent.agentCategory,
-                        author: agent.agentManager,
-                        gradient: 'from-blue-400 to-purple-500'
-                      };
-                      setSelectedAgent(agentObj);
-                    }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedFeature === agent.agentName
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
-                        : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
-                    }`}
-                  >
-                    {agent.agentName}
-                  </button>
-                ))}
+          {/* Agent功能选择按钮 */}
+          <div className="mb-8">
+            {hotAgentsLoading ? (
+              <div className="flex items-center justify-center space-x-2 text-gray-400 mb-6">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                <span className="text-sm">加载Agent功能中...</span>
               </div>
-            </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Agent功能切换按钮 */}
+                <div className="flex flex-wrap justify-center gap-3">
+                  {hotAgents.slice(0, 6).map((agent) => (
+                    <button
+                      key={agent.agentCode}
+                      onClick={() => {
+                        setSelectedFeature(agent.agentName);
+                        const agentObj = {
+                          id: agent.agentCode,
+                          name: agent.agentName,
+                          description: agent.agentDescription,
+                          category: agent.agentCategory,
+                          author: agent.agentManager,
+                          gradient: 'from-blue-400 to-purple-500'
+                        };
+                        setSelectedAgent(agentObj);
+                      }}
+                      className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                        selectedFeature === agent.agentName
+                          ? 'bg-gradient-to-r from-blue-600/90 to-blue-700/90 text-white shadow-lg shadow-blue-500/50 scale-105 border border-blue-400/50'
+                          : 'bg-gray-700/80 text-gray-300 hover:bg-gray-600/80 hover:text-white hover:scale-105 border border-gray-600/50'
+                      }`}
+                    >
+                      {agent.agentName}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handleFeaturePillClick('更多...')}
+                    className="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-700/80 text-gray-300 hover:bg-gray-600/80 hover:text-white hover:scale-105 border border-gray-600/50"
+                  >
+                    更多...
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
