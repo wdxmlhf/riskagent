@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3, ChevronDown, ChevronUp } from 'lucide-react';
+import { Menu, X, BarChart3, Search, Users, Brain, Shield, MessageSquare, Grid3X3 as Grid3X3, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
 import AgentMarketplace from '../../components/AgentMarketplace.tsx';
 import PlatformIntro from '../../components/PlatformIntro.tsx';
 import ChatPage from '../../components/ChatPage.tsx';
@@ -1121,21 +1121,33 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
             {agent.agentDescription}
           </p>
 
-          {/* 底部标签 - 固定在底部 */}
-          <div className="flex items-center gap-3 mt-auto">
-            <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-300 ${
-              isSelected
-                ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
-                : 'bg-gray-700/50 text-gray-400 border border-gray-600/30 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/30'
-            }`}>
-              {agent.agentCategory}
-            </span>
-            <span className={`inline-flex items-center space-x-1.5 text-xs transition-colors duration-300 ${
-              isSelected ? 'text-gray-400' : 'text-gray-500 group-hover:text-gray-400'
-            }`}>
-              <Users className="h-3.5 w-3.5" />
-              <span>{agent.agentBelong}</span>
-            </span>
+          {/* 底部标签和按钮 - 固定在底部 */}
+          <div className="flex items-center justify-between gap-3 mt-auto">
+            <div className="flex items-center gap-3">
+              <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-300 ${
+                isSelected
+                  ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
+                  : 'bg-gray-700/50 text-gray-400 border border-gray-600/30 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/30'
+              }`}>
+                {agent.agentCategory}
+              </span>
+              <span className={`inline-flex items-center space-x-1.5 text-xs transition-colors duration-300 ${
+                isSelected ? 'text-gray-400' : 'text-gray-500 group-hover:text-gray-400'
+              }`}>
+                <Users className="h-3.5 w-3.5" />
+                <span>{agent.agentBelong}</span>
+              </span>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
+              }}
+              className="group/btn relative inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+            >
+              <span>进入对话</span>
+              <ArrowLeft className="h-3.5 w-3.5 transform rotate-180 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
+            </button>
           </div>
         </div>
       </div>
