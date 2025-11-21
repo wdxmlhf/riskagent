@@ -908,11 +908,23 @@ export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketpl
                     <p className="text-gray-300 text-sm leading-relaxed line-clamp-2 mb-4">
                       {agent.description}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">点击查看详情</span>
-                      <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-200">
-                        <ArrowLeft className="h-3 w-3 text-gray-300 group-hover:text-white transform rotate-180" />
-                      </div>
+                    <div className="flex items-center justify-end">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (agent.status === 0) {
+                            showToastMessage('该Agent暂时未开放使用');
+                            return;
+                          }
+                          if (onStartAgent) {
+                            onStartAgent(agent);
+                          }
+                        }}
+                        className="group/btn relative inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+                      >
+                        <span>进入对话</span>
+                        <ArrowLeft className="h-4 w-4 transform rotate-180 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
+                      </button>
                     </div>
                   </div>
                 ))}
