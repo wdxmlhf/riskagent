@@ -1143,10 +1143,10 @@ function AgentCard({ agent, isSelected, onClick }: AgentCardProps) {
                 e.stopPropagation();
                 onClick();
               }}
-              className="group/btn relative inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+              className="group/btn flex-shrink-0 w-8 h-8 rounded-full bg-gray-700/50 hover:bg-blue-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/40 active:scale-95"
+              title="进入对话"
             >
-              <span>进入对话</span>
-              <ArrowLeft className="h-3.5 w-3.5 transform rotate-180 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
+              <ArrowLeft className="h-4 w-4 text-gray-300 group-hover/btn:text-white transform rotate-180 transition-all duration-300 group-hover/btn:translate-x-0.5" />
             </button>
           </div>
         </div>
