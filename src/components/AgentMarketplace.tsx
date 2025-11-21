@@ -932,10 +932,10 @@ export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketpl
                             onStartAgent(agent);
                           }
                         }}
-                        className="group/btn flex-shrink-0 w-8 h-8 rounded-full bg-gray-700/50 hover:bg-blue-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/40 active:scale-95"
+                        className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-700/50 group-hover:bg-blue-500 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-blue-500/40 active:scale-95"
                         title="进入对话"
                       >
-                        <ArrowLeft className="h-4 w-4 text-gray-300 group-hover/btn:text-white transform rotate-180 transition-all duration-300 group-hover/btn:translate-x-0.5" />
+                        <ArrowLeft className="h-4 w-4 text-gray-300 group-hover:text-white transform rotate-180 transition-all duration-300 group-hover:translate-x-0.5" />
                       </button>
                     </div>
                   </div>
