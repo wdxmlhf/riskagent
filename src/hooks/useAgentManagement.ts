@@ -142,7 +142,7 @@ ${description}
   // 生成Agent欢迎消息的函数
   const generateWelcomeMessage = useCallback((currentAgent: any) => {
     const agentSpecificContent = {
-      '小店追单': `# Markdown样式综合展示
+      '流量分析': `# Markdown样式综合展示
 
 ## 一级标题展示
 ### 二级标题展示
