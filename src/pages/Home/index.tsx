@@ -1006,7 +1006,7 @@ function Home() {
                             gradient: 'from-blue-400 to-purple-500'
                           };
                           setSelectedAgent(agentObj);
-                          setCurrentPage('agentChatPage');
+                          setCurrentPage('agent-chat');
                         }}
                       />
                     ))}
