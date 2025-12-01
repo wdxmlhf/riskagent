@@ -471,19 +471,191 @@ ${n[1]}
 
 ${v}
 
-请告诉我您需要什么帮助？`},[i,n]),u=X.useCallback(c=>{const h={小店追单:`## 分流分析下探助手
+请告诉我您需要什么帮助？`},[i,n]),u=X.useCallback(c=>{const h={流量分析:`# Markdown样式综合展示
 
-我是您的流量质量case排查助手，请您按照以下格式输入待排查信息查询对象：
+## 一级标题展示
+### 二级标题展示
+#### 三级标题展示
 
-**查询对象**: XXXXXXXX
-**对象类型**: 账户id/买家id/作者id  
-**业务类型**: 内循环
-**风险类型**: 小店追单类
-**风险场景**: 高退单率
-**查询周期**: 20250XX-20250XXX
-**资源位**: 激励视频/信息流/搜索/广告/开屏/联盟/内容热条/微信小程序
+---
 
-我将为您提供专业的流量分析和风险评估服务。`,联盟媒体分析:`## 联盟媒体风险分析助手
+## 文本样式
+
+这是**加粗文本**，这是*斜体文本*，这是***加粗斜体文本***。
+
+这是\`行内代码\`示例，常用于标记 \`variableName\` 或 \`functionName()\`。
+
+这是~~删除线文本~~效果。
+
+---
+
+## 列表样式
+
+### 无序列表
+- 第一项：流量质量分析
+- 第二项：风险评估报告
+  - 子项2.1：高危账户识别
+  - 子项2.2：异常模式检测
+    - 更深层级：详细数据分析
+- 第三项：实时监控预警
+
+### 有序列表
+1. 数据采集阶段
+2. 分析处理阶段
+   1. 数据清洗
+   2. 特征提取
+   3. 模型推理
+3. 结果输出阶段
+
+### 任务列表
+- [x] 完成数据收集
+- [x] 完成初步分析
+- [ ] 生成详细报告
+- [ ] 制定优化方案
+
+---
+
+## 代码块展示
+
+### JavaScript 代码
+\`\`\`javascript
+function analyzeTraffic(accountId, dateRange) {
+  const data = fetchTrafficData(accountId, dateRange);
+  const riskScore = calculateRiskScore(data);
+
+  return {
+    accountId,
+    riskLevel: riskScore > 80 ? 'high' : 'low',
+    metrics: data.metrics
+  };
+}
+\`\`\`
+
+### Python 代码
+\`\`\`python
+def calculate_risk_score(traffic_data):
+    """计算风险评分"""
+    anomaly_rate = traffic_data['anomaly'] / traffic_data['total']
+    return_rate = traffic_data['returns'] / traffic_data['orders']
+
+    risk_score = (anomaly_rate * 0.6 + return_rate * 0.4) * 100
+    return round(risk_score, 2)
+\`\`\`
+
+### SQL 查询
+\`\`\`sql
+SELECT
+  account_id,
+  COUNT(*) as total_orders,
+  SUM(CASE WHEN status = 'returned' THEN 1 ELSE 0 END) as returns,
+  ROUND(AVG(risk_score), 2) as avg_risk
+FROM order_analysis
+WHERE date BETWEEN '2025-01-01' AND '2025-01-31'
+GROUP BY account_id
+HAVING avg_risk > 50
+ORDER BY avg_risk DESC;
+\`\`\`
+
+---
+
+## 表格展示
+
+### 流量质量分析数据表
+
+| 账户ID | 业务类型 | 风险等级 | 退单率 | 异常流量占比 | 处理状态 |
+|--------|---------|---------|--------|------------|---------|
+| ACC001 | 内循环 | **高危** | 45.2% | 32.1% | 🚨 *紧急处理* |
+| ACC002 | 外循环 | 中危 | 28.6% | 18.5% | ⚠️ 监控中 |
+| ACC003 | 内循环 | 低危 | 12.3% | 5.2% | ✅ 正常 |
+| ACC004 | 内循环 | **高危** | 52.8% | 41.3% | 🚨 *紧急处理* |
+| ACC005 | 外循环 | 低危 | 8.9% | 3.1% | ✅ 正常 |
+
+> **数据统计周期**: 2025-01-01 至 2025-01-31
+
+---
+
+## 引用块展示
+
+> **重要提示**
+>
+> 这是一个引用块，常用于重要信息提示。
+>
+> 系统检测到 **23个高危账户**，建议立即处理。
+
+> **多级引用示例**
+>
+> 第一级引用内容
+> > 第二级引用内容
+> > > 第三级引用内容
+
+---
+
+## 链接和图片
+
+这是[外部链接示例](https://example.com)，这是\`内联代码\`。
+
+---
+
+## 混合样式示例
+
+### 关键指标汇总
+
+**统计概览**:
+1. **总账户数**: \`156\` 个
+2. **高危账户**: \`23\` 个 (***14.7%***)
+3. **平均退单率**: *24.5%*
+4. **异常流量占比**: \`16.8%\`
+
+**风险等级分布**:
+- 🚨 高危 (>40%): **23账户**
+- ⚠️ 中危 (20-40%): *45账户*
+- ✅ 低危 (<20%): 88账户
+
+> 💡 **分析建议**: 建议优先处理高危账户，重点关注 \`ACC001\` 和 \`ACC004\`。
+
+---
+
+## 复杂嵌套示例
+
+### 数据分析流程
+
+1. **数据采集阶段**
+   - 从多个\`数据源\`收集原始数据
+   - 使用以下查询:
+   \`\`\`sql
+   SELECT * FROM traffic_logs WHERE date >= '2025-01-01';
+   \`\`\`
+
+2. **数据处理阶段**
+   - 数据清洗与*标准化*
+   - **特征工程**处理:
+     - 计算异常率
+     - 提取时间特征
+     - 生成风险评分
+
+3. **结果输出阶段**
+   | 输出类型 | 格式 | 用途 |
+   |---------|------|------|
+   | 报表 | PDF | 管理层查看 |
+   | 数据 | JSON | 系统对接 |
+   | 可视化 | HTML | 实时监控 |
+
+> **注意**: 所有数据均已***脱敏处理***，符合隐私保护要求。
+
+---
+
+## 技术栈说明
+
+使用的核心技术包括:
+- \`React 18.2.0\` - 前端框架
+- \`TypeScript\` - 类型安全
+- \`Ant Design 5.27\` - UI组件库
+- \`ECharts\` - 数据可视化
+- \`Markdown\` - 内容渲染
+
+---
+
+现在您可以输入查询对象，我将为您提供**专业的流量分析**和***风险评估服务***！`,联盟媒体分析:`## 联盟媒体风险分析助手
 
 我专注于联盟媒体的流量质量分析，可以帮助您：
 
@@ -492,7 +664,18 @@ ${v}
 - 提供风险预警建议
 - 生成详细分析报告
 
-请提供您需要分析的媒体信息或具体问题。`,聚量异常分析:`## 聚量异常检测助手
+请提供您需要分析的媒体信息或具体问题。
+
+---
+
+### 媒体质量评估示例
+
+| 媒体ID | 媒体名称 | 流量评分 | 转化率 | 异常比例 | 评级 |
+|--------|---------|---------|--------|---------|------|
+| M1001 | 优质媒体A | 92 | 8.5% | 2.1% | ⭐⭐⭐⭐⭐ |
+| M1002 | 普通媒体B | 76 | 5.2% | 8.3% | ⭐⭐⭐⭐ |
+| M1003 | 风险媒体C | 45 | 2.1% | 35.6% | ⭐⭐ |
+| M1004 | 优质媒体D | 88 | 7.8% | 3.5% | ⭐⭐⭐⭐⭐ |`,聚量异常分析:`## 聚量异常检测助手
 
 我可以帮助您进行聚量数据的异常检测和分析：
 
@@ -501,7 +684,19 @@ ${v}
 - 异常模式挖掘
 - 风险等级评估
 
-请描述您遇到的聚量异常情况。`,联盟私信链条分析:`## 私信链条关系分析
+请描述您遇到的聚量异常情况。
+
+---
+
+### 聚量数据异常监测
+
+| 时间段 | 聚量值 | 预期范围 | 偏差率 | 异常类型 | 处理状态 |
+|--------|--------|---------|--------|---------|---------|
+| 01-15 08:00 | 15,230 | 10,000-12,000 | +26.9% | 突增 | 🔍 调查中 |
+| 01-16 14:00 | 8,450 | 10,000-12,000 | -15.5% | 突降 | ✅ 已处理 |
+| 01-17 10:00 | 18,920 | 10,000-12,000 | +57.7% | 异常峰值 | 🚨 待处理 |
+| 01-18 09:00 | 11,200 | 10,000-12,000 | +1.8% | 正常波动 | ✅ 正常 |
+| 01-19 16:00 | 6,780 | 10,000-12,000 | -32.2% | 异常低值 | ⚠️ 监控中 |`,联盟私信链条分析:`## 私信链条关系分析
 
 我专门分析联盟私信的传播链条和风险关系：
 
@@ -510,7 +705,26 @@ ${v}
 - 风险节点定位
 - 关系网络可视化
 
-请提供需要分析的私信链条信息。`},f=i(c);return h[f]||`## ${f}
+请提供需要分析的私信链条信息。
+
+---
+
+### 传播链条分析数据
+
+| 节点ID | 用户类型 | 传播层级 | 下游节点数 | 风险指数 | 状态 |
+|--------|---------|---------|-----------|---------|------|
+| N001 | 源头账号 | L0 | 28 | 95 | 🚨 高危 |
+| N002 | 二级传播 | L1 | 15 | 78 | ⚠️ 中危 |
+| N003 | 二级传播 | L1 | 12 | 82 | ⚠️ 中危 |
+| N004 | 三级传播 | L2 | 6 | 45 | ⚡ 低危 |
+| N005 | 三级传播 | L2 | 8 | 52 | ⚡ 低危 |
+| N006 | 四级传播 | L3 | 2 | 18 | ✅ 安全 |
+
+**链条特征**:
+- 总传播节点: 156
+- 最大传播层级: L5
+- 平均下游节点: 7.2
+- 高危节点占比: 12.8%`},f=i(c);return h[f]||`## ${f}
 
 您好！我是您的${n(c.category)}智能助手。
 
@@ -616,5 +830,5 @@ ${Z.agentDescription}
                     textarea::-webkit-scrollbar-thumb:hover {
                       background: #9ca3af;
                     }
-                  `})]}),T("button",{onClick:te,className:"flex-shrink-0 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full transition-all duration-200 hover:scale-105 shadow-lg self-end",children:T("span",{className:"text-white text-sm font-semibold",children:"发送"})})]})})}),T("div",{className:"mb-8",children:d?O("div",{className:"flex items-center justify-center space-x-2 text-gray-400 mb-6",children:[T("div",{className:"animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"}),T("span",{className:"text-sm",children:"加载Agent功能中..."})]}):T("div",{className:"space-y-4",children:O("div",{className:"flex flex-wrap justify-center gap-3",children:[f.slice(0,6).map(W=>T("button",{onClick:()=>{s(W.agentName);const Y={id:W.agentCode,name:W.agentName,description:W.agentDescription,category:W.agentCategory,author:W.agentManager,gradient:"from-blue-400 to-purple-500"};S(Y)},className:`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${o===W.agentName?"bg-gradient-to-r from-blue-600/90 to-blue-700/90 text-white shadow-lg shadow-blue-500/50 scale-105 border border-blue-400/50":"bg-gray-700/80 text-gray-300 hover:bg-gray-600/80 hover:text-white hover:scale-105 border border-gray-600/50"}`,children:W.agentName},W.agentCode)),T("button",{onClick:()=>K("更多..."),className:"px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-700/80 text-gray-300 hover:bg-gray-600/80 hover:text-white hover:scale-105 border border-gray-600/50",children:"更多..."})]})})})]})}),T("section",{className:"relative px-4 sm:px-6 lg:px-8 mt-0 pb-8",children:O("div",{className:"max-w-7xl mx-auto",children:[T("div",{className:"mb-10",children:O("div",{className:"flex items-center justify-between flex-wrap gap-4",children:[O("div",{className:"flex items-center space-x-3",children:[T(du,{className:"h-6 w-6 text-blue-400"}),T("h2",{className:"text-2xl font-bold text-gray-100",children:"热门 Agent"})]}),O("div",{className:"flex items-center gap-4 flex-wrap",children:[T("div",{className:"flex flex-wrap gap-2",children:["全部",...Array.from(new Set(f.map(W=>W.agentCategory)))].map(W=>T("button",{onClick:()=>A(W),className:`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${C===W?"bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25":"bg-gray-800/60 text-gray-300 border border-gray-600/50 hover:bg-gray-700/80 hover:text-gray-200 hover:border-gray-500/60"}`,children:W},W))}),O("button",{onClick:()=>K("更多..."),className:"relative inline-flex items-center gap-2 px-4 py-2 rounded-lg overflow-hidden group transition-all duration-300 hover:scale-105",children:[T("div",{className:"absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}),T("div",{className:"absolute inset-0 border border-blue-500/0 group-hover:border-blue-500/60 rounded-lg transition-all duration-300"}),T("div",{className:"absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent"}),T("span",{className:"text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300 relative z-10",children:"探索更多"}),T(j1,{className:"h-4 w-4 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10"})]})]})]})}),T("div",{className:"relative",children:d?O("div",{className:"flex items-center justify-center space-x-2 text-gray-400 py-8",children:[T("div",{className:"animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"}),T("span",{className:"text-sm",children:"加载热门Agent中..."})]}):g?O("div",{className:"flex flex-col items-center space-y-3 py-8",children:[O("span",{className:"text-red-400 text-sm",children:["加载失败: ",g]}),T("button",{onClick:I,className:"text-blue-400 hover:text-blue-300 text-xs underline",children:"重试"})]}):O(er,{children:[T("div",{className:"grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative",children:f.filter(W=>C==="全部"||W.agentCategory===C).slice(0,6).map(W=>T(bne,{agent:W,isSelected:!1,onClick:()=>{const Y={id:W.agentCode,name:W.agentName,description:W.agentDescription,category:W.agentCategory,author:W.agentManager,gradient:"from-blue-400 to-purple-500"};S(Y),i("agentChatPage")}},W.agentCode))}),f.filter(W=>C==="全部"||W.agentCategory===C).length>6&&T("div",{className:"absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent pointer-events-none"})]})}),!d&&!g&&f.filter(W=>C==="全部"||W.agentCategory===C).length>6&&T("div",{className:"mt-8 flex justify-center",children:O("button",{onClick:()=>K("更多..."),className:"group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gray-800/80 backdrop-blur-md border border-gray-700/60 hover:border-blue-500/60 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-blue-500/30",children:[T(Zu,{className:"h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors duration-300"}),T("span",{className:"text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300",children:"探索更多 Agent"}),T(j1,{className:"h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1"})]})})]})})]})]})}function xne(r,e="h-4 w-4"){return{风险感知Agent:T(l5,{className:e}),风险归因Agent:T(hf,{className:e}),风险识别Agent:T(pM,{className:e}),数据Agent:T(du,{className:e}),通用助手:T(_v,{className:e}),编程助手:T(Zu,{className:e}),内容创作:T(p0,{className:e})}[r]||T(du,{className:e})}function bne({agent:r,isSelected:e,onClick:t}){const a=["from-blue-500 to-purple-600","from-emerald-500 to-teal-600","from-orange-500 to-red-600","from-pink-500 to-rose-600","from-indigo-500 to-blue-600","from-cyan-500 to-blue-600"],n=r.agentCode.charCodeAt(0)%a.length,i=a[n];return O("div",{onClick:t,className:`group relative bg-gray-800/50 backdrop-blur-sm border-2 rounded-xl cursor-pointer transition-all duration-500 overflow-hidden ${e?"border-blue-500 bg-blue-500/5 shadow-2xl shadow-blue-500/30 scale-[1.03]":"border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20"}`,children:[O("div",{className:"p-6 flex items-start gap-6 h-[180px] relative z-10",children:[T("div",{className:"flex-shrink-0",children:T("div",{className:`w-16 h-16 rounded-xl bg-gradient-to-br ${i} flex items-center justify-center shadow-lg transition-all duration-500 ${e?"scale-110 rotate-3":"group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-2xl"}`,children:T("div",{className:"text-white transition-transform duration-500 group-hover:scale-110",children:xne(r.agentCategory,"h-8 w-8")})})}),O("div",{className:"flex-1 min-w-0 flex flex-col h-full",children:[T("h3",{className:`text-xl font-bold mb-2 transition-all duration-300 ${e?"text-blue-400":"text-gray-100 group-hover:text-blue-300"}`,children:r.agentName}),T("p",{className:"text-sm text-gray-400 group-hover:text-gray-100 leading-relaxed mb-3 h-[40px] overflow-hidden transition-colors duration-300",style:{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",textOverflow:"ellipsis"},children:r.agentDescription}),O("div",{className:"flex items-center justify-between gap-3 mt-auto",children:[O("div",{className:"flex items-center gap-3",children:[T("span",{className:`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-300 ${e?"bg-blue-500/20 text-blue-300 border border-blue-500/40":"bg-gray-700/50 text-gray-400 border border-gray-600/30 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/30"}`,children:r.agentCategory}),O("span",{className:`inline-flex items-center space-x-1.5 text-xs transition-colors duration-300 ${e?"text-gray-400":"text-gray-500 group-hover:text-gray-400"}`,children:[T(p0,{className:"h-3.5 w-3.5"}),T("span",{children:r.agentBelong})]})]}),T("button",{onClick:o=>{o.stopPropagation(),t()},className:"flex-shrink-0 w-8 h-8 rounded-full bg-gray-700/50 group-hover:bg-blue-500 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-blue-500/40 active:scale-95",title:"进入对话",children:T(v0,{className:"h-4 w-4 text-gray-300 group-hover:text-white transform rotate-180 transition-all duration-300 group-hover:translate-x-0.5"})})]})]})]}),e&&T("div",{className:"absolute top-4 right-4 z-20",children:O("div",{className:"relative",children:[T("div",{className:"w-4 h-4 bg-blue-500 rounded-full"}),T("div",{className:"absolute inset-0 w-4 h-4 bg-blue-400 rounded-full animate-ping"})]})})]})}const _ne="index-module__container___WuaBG",Sne={container:_ne},wne=({children:r,authParams:e})=>!e||Qt.auth.checkAuth(e)?T(er,{children:r}):T(er,{}),Tne={like:Symbol("like"),eq:Symbol("eq"),ne:Symbol("ne"),gt:Symbol("gt"),gte:Symbol("gte"),lt:Symbol("lt"),lte:Symbol("lte")},{Title:Cne}=uM,Ane=({appendLog:r})=>{const e=Qt.db.getRepository("Book"),t=()=>{e.create({name:"图书1",price:"100"}).then(o=>{r(`create success: ${JSON.stringify(o)}`)})},a=()=>{e.findOne({where:{name:"图书1"}}).then(o=>{r(`findOne success: ${JSON.stringify(o)}`)})},n=()=>{e.findAll({where:{name:{[Tne.like]:"图%"}}}).then(o=>{r(`findAll success: ${JSON.stringify(o)}`)})},i=()=>{e.delete({where:{name:"图书1"}}).then(o=>{r(`delete success: ${o}`)})};return O("div",{className:"flex-grow flex-shrink w-full",children:[T(uf,{children:"数据库操作示例"}),O(cM,{children:[T(va,{onClick:t,children:"创建Book"}),T(va,{onClick:a,children:"查询1个Book"}),T(va,{onClick:n,children:"查询多个Book"}),T(va,{onClick:i,disabled:!Qt.auth.checkAuth({allowAnonymous:!1,allowRoles:["admin","superadmin"]}),children:"删除全部Book"}),T(wne,{authParams:{allowAnonymous:!1,allowRoles:["admin","superadmin"]},children:T(va,{onClick:i,children:"删除全部Book"})})]})]})},Mne=({appendLog:r})=>O("div",{className:"flex-grow flex-shrink w-full",children:[T(uf,{children:"API调用示例"}),T(cM,{children:T(va,{onClick:()=>{Qt.api.doRequest("/helloworld",{}).then(t=>{r(`request helloworld success: ${JSON.stringify(t)}`)}).catch(t=>{r(`request helloworld failed: ${t.message}`)})},children:"调用‘/helloworld’"})})]}),Dne=()=>{const[r,e]=lM(),[t,a]=lf.useState(""),{currentUser:n}=Bs(wa),i=o=>{a(s=>s+"◆◆◆"+o+`
+                  `})]}),T("button",{onClick:te,className:"flex-shrink-0 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full transition-all duration-200 hover:scale-105 shadow-lg self-end",children:T("span",{className:"text-white text-sm font-semibold",children:"发送"})})]})})}),T("div",{className:"mb-8",children:d?O("div",{className:"flex items-center justify-center space-x-2 text-gray-400 mb-6",children:[T("div",{className:"animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"}),T("span",{className:"text-sm",children:"加载Agent功能中..."})]}):T("div",{className:"space-y-4",children:O("div",{className:"flex flex-wrap justify-center gap-3",children:[f.slice(0,6).map(W=>T("button",{onClick:()=>{s(W.agentName);const Y={id:W.agentCode,name:W.agentName,description:W.agentDescription,category:W.agentCategory,author:W.agentManager,gradient:"from-blue-400 to-purple-500"};S(Y)},className:`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${o===W.agentName?"bg-gradient-to-r from-blue-600/90 to-blue-700/90 text-white shadow-lg shadow-blue-500/50 scale-105 border border-blue-400/50":"bg-gray-700/80 text-gray-300 hover:bg-gray-600/80 hover:text-white hover:scale-105 border border-gray-600/50"}`,children:W.agentName},W.agentCode)),T("button",{onClick:()=>K("更多..."),className:"px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-700/80 text-gray-300 hover:bg-gray-600/80 hover:text-white hover:scale-105 border border-gray-600/50",children:"更多..."})]})})})]})}),T("section",{className:"relative px-4 sm:px-6 lg:px-8 mt-0 pb-8",children:O("div",{className:"max-w-7xl mx-auto",children:[T("div",{className:"mb-10",children:O("div",{className:"flex items-center justify-between flex-wrap gap-4",children:[O("div",{className:"flex items-center space-x-3",children:[T(du,{className:"h-6 w-6 text-blue-400"}),T("h2",{className:"text-2xl font-bold text-gray-100",children:"热门 Agent"})]}),O("div",{className:"flex items-center gap-4 flex-wrap",children:[T("div",{className:"flex flex-wrap gap-2",children:["全部",...Array.from(new Set(f.map(W=>W.agentCategory)))].map(W=>T("button",{onClick:()=>A(W),className:`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${C===W?"bg-blue-600/30 text-blue-300 border border-blue-500/60 shadow-lg shadow-blue-500/25":"bg-gray-800/60 text-gray-300 border border-gray-600/50 hover:bg-gray-700/80 hover:text-gray-200 hover:border-gray-500/60"}`,children:W},W))}),O("button",{onClick:()=>K("更多..."),className:"inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 hover:text-blue-500 transition-colors duration-200",children:[T("span",{children:"探索更多"}),T(j1,{className:"h-4 w-4 rotate-[-90deg]"})]})]})]})}),T("div",{className:"relative",children:d?O("div",{className:"flex items-center justify-center space-x-2 text-gray-400 py-8",children:[T("div",{className:"animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"}),T("span",{className:"text-sm",children:"加载热门Agent中..."})]}):g?O("div",{className:"flex flex-col items-center space-y-3 py-8",children:[O("span",{className:"text-red-400 text-sm",children:["加载失败: ",g]}),T("button",{onClick:I,className:"text-blue-400 hover:text-blue-300 text-xs underline",children:"重试"})]}):O(er,{children:[T("div",{className:"grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative",children:f.filter(W=>C==="全部"||W.agentCategory===C).slice(0,6).map(W=>T(bne,{agent:W,isSelected:!1,onClick:()=>{const Y={id:W.agentCode,name:W.agentName,description:W.agentDescription,category:W.agentCategory,author:W.agentManager,gradient:"from-blue-400 to-purple-500"};S(Y),i("agent-chat")}},W.agentCode))}),f.filter(W=>C==="全部"||W.agentCategory===C).length>6&&T("div",{className:"absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent pointer-events-none"})]})}),!d&&!g&&f.filter(W=>C==="全部"||W.agentCategory===C).length>6&&T("div",{className:"mt-8 flex justify-center",children:O("button",{onClick:()=>K("更多..."),className:"group relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-gray-800/80 backdrop-blur-md border border-gray-700/60 hover:border-blue-500/60 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-blue-500/30",children:[T(Zu,{className:"h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors duration-300"}),T("span",{className:"text-base font-semibold text-gray-300 group-hover:text-white transition-colors duration-300",children:"探索更多 Agent"}),T(j1,{className:"h-5 w-5 text-gray-400 group-hover:text-blue-400 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1"})]})})]})})]})]})}function xne(r,e="h-4 w-4"){return{风险感知Agent:T(l5,{className:e}),风险归因Agent:T(hf,{className:e}),风险识别Agent:T(pM,{className:e}),数据Agent:T(du,{className:e}),通用助手:T(_v,{className:e}),编程助手:T(Zu,{className:e}),内容创作:T(p0,{className:e})}[r]||T(du,{className:e})}function bne({agent:r,isSelected:e,onClick:t}){const a=["from-blue-500 to-purple-600","from-emerald-500 to-teal-600","from-orange-500 to-red-600","from-pink-500 to-rose-600","from-indigo-500 to-blue-600","from-cyan-500 to-blue-600"],n=r.agentCode.charCodeAt(0)%a.length,i=a[n];return O("div",{onClick:t,className:`group relative bg-gray-800/50 backdrop-blur-sm border-2 rounded-xl cursor-pointer transition-all duration-500 overflow-hidden ${e?"border-blue-500 bg-blue-500/5 shadow-2xl shadow-blue-500/30 scale-[1.03]":"border-gray-700/50 hover:border-blue-400/60 hover:bg-gray-800/80 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20"}`,children:[O("div",{className:"p-6 flex items-start gap-6 h-[180px] relative z-10",children:[T("div",{className:"flex-shrink-0",children:T("div",{className:`w-16 h-16 rounded-xl bg-gradient-to-br ${i} flex items-center justify-center shadow-lg transition-all duration-500 ${e?"scale-110 rotate-3":"group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-2xl"}`,children:T("div",{className:"text-white transition-transform duration-500 group-hover:scale-110",children:xne(r.agentCategory,"h-8 w-8")})})}),O("div",{className:"flex-1 min-w-0 flex flex-col h-full",children:[T("h3",{className:`text-xl font-bold mb-2 transition-all duration-300 ${e?"text-blue-400":"text-gray-100 group-hover:text-blue-300"}`,children:r.agentName}),T("p",{className:"text-sm text-gray-400 group-hover:text-gray-100 leading-relaxed mb-3 h-[40px] overflow-hidden transition-colors duration-300",style:{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",textOverflow:"ellipsis"},children:r.agentDescription}),O("div",{className:"flex items-center justify-between gap-3 mt-auto",children:[O("div",{className:"flex items-center gap-3",children:[T("span",{className:`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-300 ${e?"bg-blue-500/20 text-blue-300 border border-blue-500/40":"bg-gray-700/50 text-gray-400 border border-gray-600/30 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/30"}`,children:r.agentCategory}),O("span",{className:`inline-flex items-center space-x-1.5 text-xs transition-colors duration-300 ${e?"text-gray-400":"text-gray-500 group-hover:text-gray-400"}`,children:[T(p0,{className:"h-3.5 w-3.5"}),T("span",{children:r.agentBelong})]})]}),T("button",{onClick:o=>{o.stopPropagation(),t()},className:"flex-shrink-0 w-8 h-8 rounded-full bg-gray-700/50 group-hover:bg-blue-500 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-blue-500/40 active:scale-95",title:"进入对话",children:T(v0,{className:"h-4 w-4 text-gray-300 group-hover:text-white transform rotate-180 transition-all duration-300 group-hover:translate-x-0.5"})})]})]})]}),e&&T("div",{className:"absolute top-4 right-4 z-20",children:O("div",{className:"relative",children:[T("div",{className:"w-4 h-4 bg-blue-500 rounded-full"}),T("div",{className:"absolute inset-0 w-4 h-4 bg-blue-400 rounded-full animate-ping"})]})})]})}const _ne="index-module__container___WuaBG",Sne={container:_ne},wne=({children:r,authParams:e})=>!e||Qt.auth.checkAuth(e)?T(er,{children:r}):T(er,{}),Tne={like:Symbol("like"),eq:Symbol("eq"),ne:Symbol("ne"),gt:Symbol("gt"),gte:Symbol("gte"),lt:Symbol("lt"),lte:Symbol("lte")},{Title:Cne}=uM,Ane=({appendLog:r})=>{const e=Qt.db.getRepository("Book"),t=()=>{e.create({name:"图书1",price:"100"}).then(o=>{r(`create success: ${JSON.stringify(o)}`)})},a=()=>{e.findOne({where:{name:"图书1"}}).then(o=>{r(`findOne success: ${JSON.stringify(o)}`)})},n=()=>{e.findAll({where:{name:{[Tne.like]:"图%"}}}).then(o=>{r(`findAll success: ${JSON.stringify(o)}`)})},i=()=>{e.delete({where:{name:"图书1"}}).then(o=>{r(`delete success: ${o}`)})};return O("div",{className:"flex-grow flex-shrink w-full",children:[T(uf,{children:"数据库操作示例"}),O(cM,{children:[T(va,{onClick:t,children:"创建Book"}),T(va,{onClick:a,children:"查询1个Book"}),T(va,{onClick:n,children:"查询多个Book"}),T(va,{onClick:i,disabled:!Qt.auth.checkAuth({allowAnonymous:!1,allowRoles:["admin","superadmin"]}),children:"删除全部Book"}),T(wne,{authParams:{allowAnonymous:!1,allowRoles:["admin","superadmin"]},children:T(va,{onClick:i,children:"删除全部Book"})})]})]})},Mne=({appendLog:r})=>O("div",{className:"flex-grow flex-shrink w-full",children:[T(uf,{children:"API调用示例"}),T(cM,{children:T(va,{onClick:()=>{Qt.api.doRequest("/helloworld",{}).then(t=>{r(`request helloworld success: ${JSON.stringify(t)}`)}).catch(t=>{r(`request helloworld failed: ${t.message}`)})},children:"调用‘/helloworld’"})})]}),Dne=()=>{const[r,e]=lM(),[t,a]=lf.useState(""),{currentUser:n}=Bs(wa),i=o=>{a(s=>s+"◆◆◆"+o+`
 `)};return X.useEffect(()=>{const o=r.get("ticket")||Qt.auth.getTicket();o&&(console.debug(`ticket: ${o}`),Qt.auth.setTicket(o),r.delete("ticket"),e(r),Qt.auth.getCurrentUserInfo().then(s=>{wa.currentUser=s,i(`登录成功: ${JSON.stringify(s)}`)}).catch(s=>{console.error(s)}))},[]),O("div",{className:Sne.container,children:[O("div",{className:"flex-grow flex-shrink w-full",children:[T(Cne,{level:2,children:"示例页面1"}),T(uf,{children:"用户登录"}),n?O("div",{children:["当前用户: ",n.name,", 角色: ",n.roles.join(",")]}):O("div",{children:["未登录： ",T(va,{onClick:vu,children:"点击登录"})]}),n?O("div",{children:[T(Ane,{appendLog:i}),T(Mne,{appendLog:i})]}):T("div",{children:"更多操作需要登录后可见"})]}),O(uf,{size:"small",children:["日志 ",T(va,{danger:!0,onClick:()=>a(""),children:"ClearLog"})]}),T("div",{className:"relative border border-black  bg-red-100 h-[200px] w-full p-1",children:T("div",{className:"relative flex-grow h-full overflow-scroll break-all whitespace-pre-line",children:t})})]})},Lne=()=>{var e;const{currentUser:r}=Bs(wa);return T("div",{className:"flex items-center justify-center min-h-screen bg-gray-100",children:O("div",{className:"text-center",children:[T("h1",{className:"mb-4 text-4xl font-bold",children:"权限检查示例页面"}),O("p",{className:"text-xl text-gray-600",children:["你好, ",r==null?void 0:r.name,", 你的角色是: [",(e=r==null?void 0:r.roles.join(","))!=null?e:"","]"]})]})})},sM=""+new URL("react-35ef61ed.svg",import.meta.url).href,Ine=({className:r})=>T(SE,{theme:"light",mode:"horizontal",className:r!=null?r:"",defaultSelectedKeys:["home"],items:[{key:"home",icon:T(Wa,{icon:"mdi:home"}),label:T(md,{to:"/",children:"首页"})},{key:"example1",icon:T(Wa,{icon:"mdi:home"}),label:T(md,{to:"/example1",children:"示例1"})},{key:"example2",icon:T(Wa,{icon:"mdi:home"}),label:T(md,{to:"/example2_with_auth",children:"示例2"})}]}),{Header:kne,Content:Pne}=hM,{Title:Nne}=uM,Rne=({children:r})=>{var t;const{currentUser:e}=Bs(wa);return T(wE,{theme:{components:{Layout:{headerHeight:48,headerBg:"#fff",headerColor:"#000"}}},children:O(hM,{style:{minHeight:"100vh"},children:[O(kne,{className:"flex !px-[20px]",children:[O("div",{className:"flex items-center mr-[20px]",children:[T("img",{src:sM,className:"!h-6 !w-6 !mr-4"}),T(Nne,{level:5,className:"!m-0",children:"站点名称"})]}),T("div",{className:"flex-grow flex-shrink",children:T(Ine,{className:"w-full"})}),O("div",{className:"flex items-center transition-opacity duration-500 ease-in-out",children:[T("img",{src:(t=e==null?void 0:e.thumbnailAvatarUrl)!=null?t:sM,className:"h-6 w-6 mr-1 rounded-full"}),e?e==null?void 0:e.name:T("span",{className:"text-gray-500 cursor-pointer",onClick:vu,children:"点击登录"})]})]}),T(Pne,{className:"w-full h-full p-0",children:r})]})})},Ene="index-module__loader___csDJG",One="index-module__ball___r21-m",Bne="index-module__bounce-1___AHwbn",Vne="index-module__bounce-3___gidcB",zne="index-module__bounce-2___-OkVs",Rh={loader:Ene,ball:One,"bounce-1":"index-module__bounce-1___AHwbn",bounce1:Bne,"bounce-3":"index-module__bounce-3___gidcB",bounce3:Vne,"bounce-2":"index-module__bounce-2___-OkVs",bounce2:zne},Gne=({color:r="#fff",size:e="medium",loading:t=!0,children:a})=>t?a?O("div",{className:"relative",children:[a,T("div",{className:"absolute inset-0 flex items-center justify-center bg-white/75 z-2000",children:T("div",{className:Rh.loader,children:[1,2,3].map(n=>T("li",{className:Rh.ball,style:{backgroundColor:r}},n))})})]}):T("div",{className:"flex items-center justify-center w-full h-full",children:T("div",{className:Rh.loader,children:[1,2,3].map(n=>T("li",{className:Rh.ball,style:{backgroundColor:r}},n))})}):T(er,{children:a}),Eh=({children:r,loading:e,autoLogin:t=!0,authParams:a={}})=>{var c,h;const[n,i]=lf.useState(!1),[o,s]=lM(),{currentUser:l}=Bs(wa);function u(f){!l&&t===!0&&(a==null?void 0:a.allowAnonymous)!==!0&&(f?(as.warning("登录已过期，3秒后将重新登录..."),setTimeout(()=>{vu()},3e3)):vu())}return X.useEffect(()=>{const f=o.get("ticket");f&&(o.delete("ticket"),s(o),Qt.auth.setTicket(f));const v=f||Qt.auth.getTicket();!l&&v?(console.debug(`getUserInfo with ticket: ${v}`),i(!0),Qt.auth.getCurrentUserInfo().then(d=>{wa.currentUser=d,i(!1)}).catch(d=>{console.error(d),i(!1),d.code==401&&(Qt.auth.setTicket(""),u(!0))})):u(!1)},[]),!a||Qt.auth.checkAuth(a)?T(er,{children:r}):n?T(er,{children:e!=null?e:T(Gne,{loading:n,color:"#ccc"})}):T("div",{className:"flex items-center justify-center min-h-screen bg-gray-100",children:T("div",{className:"text-center",children:l?O(er,{children:[T("h1",{className:"mb-4 text-2xl font-bold",children:"无权限"}),O("p",{className:"text-gray-600 text-ml",children:["当前角色: [",(c=l.roles)==null?void 0:c.join(","),"], 需要角色: [",(h=a==null?void 0:a.allowRoles)==null?void 0:h.join(","),"]"]}),T(va,{onClick:()=>{Qt.auth.setTicket(""),wa.currentUser=null},children:"退出登录"})]}):O(er,{children:[T("h1",{className:"mb-4 text-2xl font-bold",children:"未登录"}),T(va,{onClick:vu,children:"点击登录"})]})})})},Fne=()=>T(bE,{children:O(_E,{children:[T(xc,{path:"/",element:T(Eh,{authParams:{allowAnonymous:!0},children:T(oM,{})})}),T(xc,{path:"/example1",element:T(Eh,{authParams:{allowAnonymous:!0},children:T(Rne,{children:T(Dne,{})})})}),T(xc,{path:"/example2_with_auth",element:T(Eh,{autoLogin:!0,authParams:{allowAnonymous:!1,allowRoles:["admin"]},children:T(Lne,{})})}),T(xc,{path:"*",element:T(Eh,{authParams:{allowAnonymous:!0},children:T(oM,{})})})]})});function $ne(){return T(Fne,{})}const Hne=fM(document.getElementById("root"));Hne.render(T($ne,{}));export{Wne as __vite_legacy_guard};
