@@ -946,22 +946,13 @@ function Home() {
                   })}
                 </div>
 
-                {/* 探索更多链接 - 炫酷版本 */}
+                {/* 探索更多链接 - 简洁版本 */}
                 <button
                   onClick={() => handleFeaturePillClick('更多...')}
-                  className="relative inline-flex items-center gap-2 px-4 py-2 rounded-lg overflow-hidden group transition-all duration-300 hover:scale-105"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
                 >
-                  {/* 背景渐变层 */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* 动态边框 */}
-                  <div className="absolute inset-0 border border-blue-500/0 group-hover:border-blue-500/60 rounded-lg transition-all duration-300"></div>
-
-                  {/* 扫光效果 */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
-                  <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300 relative z-10">探索更多</span>
-                  <ChevronDown className="h-4 w-4 text-blue-400 group-hover:text-blue-300 rotate-[-90deg] transition-all duration-300 group-hover:translate-x-1 relative z-10" />
+                  <span>探索更多</span>
+                  <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
                 </button>
               </div>
             </div>
