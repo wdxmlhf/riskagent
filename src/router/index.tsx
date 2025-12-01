@@ -4,6 +4,7 @@ import Home from '../pages/Home/index';
 import Example1 from '../pages/Example1';
 import Example2 from '../pages/Example2';
 import BannerDesigns from '../pages/BannerDesigns';
+import BannerDemo from '../pages/BannerDemo';
 
 import Layout from '../components/Layout';
 
@@ -24,6 +25,9 @@ const AppRouter = () => {
 
         {/* 顶部信息条设计方案展示页面 */}
         <Route path="/banner-designs" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><BannerDesigns /></Layout></AuthenticatedLayout>} />
+
+        {/* 顶部信息条实际效果演示页面 */}
+        <Route path="/banner-demo" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><BannerDemo /></AuthenticatedLayout>} />
 
         {/* 捕获所有未匹配的路由，重定向到首页 */}
         <Route path="*" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
