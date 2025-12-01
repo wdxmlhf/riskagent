@@ -949,7 +949,7 @@ function Home() {
                 {/* 探索更多链接 - 简洁版本 */}
                 <button
                   onClick={() => handleFeaturePillClick('更多...')}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 hover:text-blue-500 transition-colors duration-200"
                 >
                   <span>探索更多</span>
                   <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
