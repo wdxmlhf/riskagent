@@ -3,6 +3,7 @@ import { Route, Routes, HashRouter } from 'react-router-dom';
 import Home from '../pages/Home/index';
 import Example1 from '../pages/Example1';
 import Example2 from '../pages/Example2';
+import MyAgents from '../pages/MyAgents';
 
 import Layout from '../components/Layout';
 
@@ -15,6 +16,9 @@ const AppRouter = () => {
       <Routes>
         {/* 主页默认允许匿名访问 */}
         <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
+
+        {/* 我的Agent管理页面 */}
+        <Route path="/my-agents" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><MyAgents /></Layout></AuthenticatedLayout>} />
 
         {/* 以下为示例，你可以将其删除 */}
         <Route path="/example1" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Example1 /></Layout></AuthenticatedLayout>} />
