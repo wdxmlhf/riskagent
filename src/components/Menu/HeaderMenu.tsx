@@ -18,6 +18,11 @@ const Layout: React.FC<{ className?: string | undefined; }> = ({ className }) =>
           icon: <Icon icon="mdi:home" />,
           label: <Link to="/">首页</Link>,
         },
+        {
+          key: 'my-agents',
+          icon: <Icon icon="mdi:robot" />,
+          label: <Link to="/my-agents">我的Agent</Link>,
+        },
         // 以下为示例，你可以将其删除
         {
           key: 'example1',
