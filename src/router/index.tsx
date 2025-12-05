@@ -15,7 +15,7 @@ const AppRouter = () => {
     <HashRouter>
       <Routes>
         {/* 主页默认允许匿名访问 */}
-        <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
+        <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Home /></Layout></AuthenticatedLayout>} />
 
         {/* 我的Agent管理页面 */}
         <Route path="/my-agents" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><MyAgents /></Layout></AuthenticatedLayout>} />
@@ -26,7 +26,7 @@ const AppRouter = () => {
         <Route path="/example2_with_auth" element={<AuthenticatedLayout autoLogin={true} authParams={{ allowAnonymous: false, allowRoles: ['admin'] }}><Example2 /></AuthenticatedLayout>} />
 
         {/* 捕获所有未匹配的路由，重定向到首页 */}
-        <Route path="*" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
+        <Route path="*" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Home /></Layout></AuthenticatedLayout>} />
       </Routes>
     </HashRouter>
   );
