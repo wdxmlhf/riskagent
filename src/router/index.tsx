@@ -3,7 +3,6 @@ import { Route, Routes, HashRouter } from 'react-router-dom';
 import Home from '../pages/Home/index';
 import Example1 from '../pages/Example1';
 import Example2 from '../pages/Example2';
-import MyAgents from '../pages/MyAgents';
 
 import Layout from '../components/Layout';
 
@@ -15,10 +14,7 @@ const AppRouter = () => {
     <HashRouter>
       <Routes>
         {/* 主页默认允许匿名访问 */}
-        <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Home /></Layout></AuthenticatedLayout>} />
-
-        {/* 我的Agent管理页面 */}
-        <Route path="/my-agents" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><MyAgents /></Layout></AuthenticatedLayout>} />
+        <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
 
         {/* 以下为示例，你可以将其删除 */}
         <Route path="/example1" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Example1 /></Layout></AuthenticatedLayout>} />
@@ -26,7 +22,7 @@ const AppRouter = () => {
         <Route path="/example2_with_auth" element={<AuthenticatedLayout autoLogin={true} authParams={{ allowAnonymous: false, allowRoles: ['admin'] }}><Example2 /></AuthenticatedLayout>} />
 
         {/* 捕获所有未匹配的路由，重定向到首页 */}
-        <Route path="*" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Home /></Layout></AuthenticatedLayout>} />
+        <Route path="*" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
       </Routes>
     </HashRouter>
   );

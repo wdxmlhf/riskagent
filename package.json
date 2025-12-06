@@ -11,7 +11,6 @@
   "description": "autocode生成的项目的前端模版。注意，下面的依赖尽量减少，加快在WebContainer中的包安装和编译速度",
   "dependencies": {
     "@iconify/react": "^6.0.0",
-    "@supabase/supabase-js": "^2.86.1",
     "@types/lodash": "^4.17.20",
     "antd": "5.27.1",
     "axios": "^1.13.2",
