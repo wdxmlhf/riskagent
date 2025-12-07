@@ -19,8 +19,8 @@ const AppRouter = () => {
         <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
 
         {/* 我的 Agent 模块 */}
-        <Route path="/my-agents" element={<AuthenticatedLayout authParams={{ allowAnonymous: false }} ><MyAgents /></AuthenticatedLayout>} />
-        <Route path="/my-agents/:agentId" element={<AuthenticatedLayout authParams={{ allowAnonymous: false }} ><AgentDetail /></AuthenticatedLayout>} />
+        <Route path="/my-agents" element={<AuthenticatedLayout autoLogin={false} authParams={{ allowAnonymous: true }} ><MyAgents /></AuthenticatedLayout>} />
+        <Route path="/my-agents/:agentId" element={<AuthenticatedLayout autoLogin={false} authParams={{ allowAnonymous: true }} ><AgentDetail /></AuthenticatedLayout>} />
 
         {/* 以下为示例，你可以将其删除 */}
         <Route path="/example1" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Example1 /></Layout></AuthenticatedLayout>} />
