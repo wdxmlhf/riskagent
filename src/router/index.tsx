@@ -7,6 +7,8 @@ import Example2 from '../pages/Example2';
 import Layout from '../components/Layout';
 
 import AuthenticatedLayout from '@/components/AuthenticatedLayout';
+import MyAgents from '@/components/MyAgents';
+import AgentDetail from '@/components/MyAgents/AgentDetail';
 
 // 路由系统基于`react-router-dom`V6版本实现
 const AppRouter = () => {
@@ -15,6 +17,10 @@ const AppRouter = () => {
       <Routes>
         {/* 主页默认允许匿名访问 */}
         <Route path="/" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Home /></AuthenticatedLayout>} />
+
+        {/* 我的 Agent 模块 */}
+        <Route path="/my-agents" element={<AuthenticatedLayout authParams={{ allowAnonymous: false }} ><MyAgents /></AuthenticatedLayout>} />
+        <Route path="/my-agents/:agentId" element={<AuthenticatedLayout authParams={{ allowAnonymous: false }} ><AgentDetail /></AuthenticatedLayout>} />
 
         {/* 以下为示例，你可以将其删除 */}
         <Route path="/example1" element={<AuthenticatedLayout authParams={{ allowAnonymous: true }} ><Layout><Example1 /></Layout></AuthenticatedLayout>} />

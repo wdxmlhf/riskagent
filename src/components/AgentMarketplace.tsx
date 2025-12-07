@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, MessageSquare, Grid3x3 as Grid3X3, Shield, Search, Menu, X, Layout, MoreVertical, Trash2, Edit2, Link2, Check, AlertCircle, CheckCircle, User, LogOut } from 'lucide-react';
+import { ArrowLeft, MessageSquare, Grid3x3 as Grid3X3, Shield, Search, Menu, X, Layout, MoreVertical, Trash2, Edit2, Link2, Check, AlertCircle, CheckCircle, User, LogOut, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { post } from '../common/axios';
 
 // 全局登录状态管理
@@ -169,6 +170,8 @@ const transformAgentData = (agentItems: AgentDataItem[]): AgentCard[] => {
 };
 
 export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketplaceProps) {
+  const navigate = useNavigate();
+
   // 获取分类显示名称的函数
   const getCategoryDisplayName = (code: string) => {
     const config = categoryConfigs.find(c => c.code === code);
@@ -628,6 +631,18 @@ export default function AgentMarketplace({ onBack, onStartAgent }: AgentMarketpl
               }`} />
               {!isSidebarCollapsed && <span className="truncate">Agent广场</span>}
             </div>
+            <button
+              onClick={() => navigate('/my-agents')}
+              title={isSidebarCollapsed ? '我的 Agent' : ''}
+              className={`group relative flex items-center w-full text-gray-200 hover:bg-blue-900/30 hover:text-blue-400 rounded-xl transition-all duration-200 hover:scale-105 ${
+                isSidebarCollapsed ? 'justify-center p-3' : 'px-4 py-3'
+              }`}
+            >
+              <Settings className={`flex-shrink-0 transition-all duration-200 ${
+                isSidebarCollapsed ? 'h-5 w-5' : 'h-5 w-5 mr-3'
+              }`} />
+              {!isSidebarCollapsed && <span className="truncate">我的 Agent</span>}
+            </button>
           </nav>
           </div>
 

@@ -172,6 +172,53 @@ const mockData: Record<string, any> = {
     msg: 'success',
     data: [],
     requestId: 'mock-request-id'
+  },
+  '/api/my-agents/list': {
+    data: [
+      {
+        id: '1',
+        agent_code: 'my_agent_001',
+        agent_name: '数据分析助手',
+        agent_category: 'data-analysis',
+        agent_belong: '数据团队',
+        agent_manager: '张三',
+        agent_user: '全体员工',
+        agent_description: '专业的数据分析助手，帮助您快速分析数据',
+        agent_prompt: '你是一个专业的数据分析助手',
+        status: true,
+        created_at: new Date().toISOString()
+      }
+    ]
+  },
+  '/api/my-agents/stats': {
+    data: [
+      {
+        id: '1',
+        agent_id: '1',
+        agent_name: '数据分析助手',
+        agent_code: 'my_agent_001',
+        week_start_date: '2025-12-01',
+        unique_users: 150,
+        conversation_count: 320,
+        task_trigger_count: 45,
+        feedback_count: 28,
+        satisfaction_rate: 85.5
+      }
+    ]
+  },
+  '/api/my-agents/tasks': {
+    data: [
+      {
+        id: '1',
+        agent_id: '1',
+        agent_name: '数据分析助手',
+        task_name: '每日数据报告',
+        frequency: 'daily',
+        group_chat_numbers: ['12345', '67890'],
+        is_active: true,
+        created_at: new Date().toISOString()
+      }
+    ]
   }
 };
 
@@ -187,6 +234,31 @@ const request = async <T>(url: string, config: FetchRequestConfig = {}): Promise
       setTimeout(() => {
         resolve(mockData[url] as T);
       }, 300); // 模拟网络延迟
+    });
+  }
+
+  // 支持动态路由的Mock
+  if (url.match(/^\/api\/my-agents\/[^/]+$/)) {
+    const agentId = url.split('/').pop();
+    console.log('[Mock] 拦截动态路由请求:', url);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const agent = {
+          id: agentId,
+          agent_code: 'my_agent_001',
+          agent_name: '数据分析助手',
+          agent_category: 'data-analysis',
+          agent_belong: '数据团队',
+          agent_manager: '张三',
+          agent_user: '全体员工',
+          agent_description: '专业的数据分析助手，帮助您快速分析数据',
+          agent_prompt: '你是一个专业的数据分析助手',
+          status: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        resolve({ data: agent } as T);
+      }, 300);
     });
   }
 
