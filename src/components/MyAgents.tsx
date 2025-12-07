@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, ConfigProvider } from 'antd';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import AppNavbar from './AppNavbar';
 import AgentDataMonitoring from './MyAgents/AgentDataMonitoring';
 import AgentManagement from './MyAgents/AgentManagement';
 import AgentCapabilities from './MyAgents/AgentCapabilities';
 
+const STORAGE_KEYS = {
+  IS_LOGGED_IN: 'riskagent_isLoggedIn',
+  USERNAME: 'riskagent_username'
+};
+
+const getStoredLoginState = () => {
+  try {
+    const isLoggedIn = localStorage.getItem(STORAGE_KEYS.IS_LOGGED_IN) === 'true';
+    const username = localStorage.getItem(STORAGE_KEYS.USERNAME) || '';
+    return { isLoggedIn, username };
+  } catch (error) {
+    return { isLoggedIn: false, username: '' };
+  }
+};
+
 const MyAgents: React.FC = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('1');
+  const [isLoggedIn, setIsLoggedIn] = useState(() => getStoredLoginState().isLoggedIn);
+  const [username, setUsername] = useState(() => getStoredLoginState().username);
 
   useEffect(() => {
     const tab = searchParams.get('tab');
@@ -20,6 +38,18 @@ const MyAgents: React.FC = () => {
   const handleTabChange = (key: string) => {
     setActiveTab(key);
     setSearchParams({ tab: key });
+  };
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.IS_LOGGED_IN);
+      localStorage.removeItem(STORAGE_KEYS.USERNAME);
+      setIsLoggedIn(false);
+      setUsername('');
+      navigate('/');
+    } catch (error) {
+      console.error('退出登录失败', error);
+    }
   };
 
   const tabItems = [
@@ -51,7 +81,11 @@ const MyAgents: React.FC = () => {
       </div>
 
       <div className="relative z-10 flex flex-col flex-1">
-        <AppNavbar />
+        <AppNavbar
+          isLoggedIn={isLoggedIn}
+          username={username}
+          onLogout={handleLogout}
+        />
 
         <div className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">

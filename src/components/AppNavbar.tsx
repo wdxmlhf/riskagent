@@ -37,7 +37,7 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ isLoggedIn = false, username = ''
                 首页
               </button>
               <button
-                onClick={() => navigate('/my-agents')}
+                onClick={() => handleNavigate('/my-agents')}
                 className="text-gray-300 hover:text-blue-400 text-sm font-medium transition-all duration-200 hover:scale-105"
               >
                 我的 Agent
@@ -83,7 +83,10 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ isLoggedIn = false, username = ''
                 首页
               </button>
               <button
-                onClick={() => handleNavigate('/my-agents')}
+                onClick={() => {
+                  handleNavigate('/my-agents');
+                  setIsMobileMenuOpen(false);
+                }}
                 className="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-lg text-base font-medium w-full text-left transition-colors"
               >
                 我的 Agent

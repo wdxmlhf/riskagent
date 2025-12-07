@@ -6,6 +6,21 @@ import axios from '../../common/axios';
 import AppNavbar from '../AppNavbar';
 import CreateAgentModal from './CreateAgentModal';
 
+const STORAGE_KEYS = {
+  IS_LOGGED_IN: 'riskagent_isLoggedIn',
+  USERNAME: 'riskagent_username'
+};
+
+const getStoredLoginState = () => {
+  try {
+    const isLoggedIn = localStorage.getItem(STORAGE_KEYS.IS_LOGGED_IN) === 'true';
+    const username = localStorage.getItem(STORAGE_KEYS.USERNAME) || '';
+    return { isLoggedIn, username };
+  } catch (error) {
+    return { isLoggedIn: false, username: '' };
+  }
+};
+
 interface Agent {
   id: string;
   agent_code: string;
@@ -36,6 +51,8 @@ const AgentDetail: React.FC = () => {
   const [tasks, setTasks] = useState<AgentTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => getStoredLoginState().isLoggedIn);
+  const [username, setUsername] = useState(() => getStoredLoginState().username);
 
   useEffect(() => {
     fetchAgentDetail();
@@ -83,6 +100,18 @@ const AgentDetail: React.FC = () => {
     navigate('/my-agents?tab=3');
   };
 
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.IS_LOGGED_IN);
+      localStorage.removeItem(STORAGE_KEYS.USERNAME);
+      setIsLoggedIn(false);
+      setUsername('');
+      navigate('/');
+    } catch (error) {
+      console.error('退出登录失败', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
@@ -112,7 +141,11 @@ const AgentDetail: React.FC = () => {
       </div>
 
       <div className="relative z-10 flex flex-col flex-1">
-        <AppNavbar />
+        <AppNavbar
+          isLoggedIn={isLoggedIn}
+          username={username}
+          onLogout={handleLogout}
+        />
 
         <div className="flex-1 p-6">
           <div className="max-w-5xl mx-auto">
