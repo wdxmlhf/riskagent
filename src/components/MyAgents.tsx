@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, ConfigProvider } from 'antd';
 import { useSearchParams } from 'react-router-dom';
+import AppNavbar from './AppNavbar';
 import AgentDataMonitoring from './MyAgents/AgentDataMonitoring';
 import AgentManagement from './MyAgents/AgentManagement';
 import AgentCapabilities from './MyAgents/AgentCapabilities';
@@ -40,20 +41,77 @@ const MyAgents: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white mb-2">我的 Agent</h1>
-          <p className="text-gray-400">管理您创建的 Agent 及其数据</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative flex flex-col">
+      <div className="fixed inset-0 z-0">
+        <img
+          src="https://p4-ad.adkwai.com/udata/pkg/ks-ad-fe/riskagentBG.png"
+          alt="background"
+          className="w-full h-full object-cover opacity-30"
+        />
+      </div>
 
-        <div className="bg-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-700/50 p-6">
-          <Tabs
-            activeKey={activeTab}
-            onChange={handleTabChange}
-            items={tabItems}
-            className="my-agents-tabs"
-          />
+      <div className="relative z-10 flex flex-col flex-1">
+        <AppNavbar />
+
+        <div className="flex-1 p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-white mb-2">我的 Agent</h1>
+              <p className="text-gray-400">管理您创建的 Agent 及其数据</p>
+            </div>
+
+            <ConfigProvider
+              theme={{
+                components: {
+                  Tabs: {
+                    colorBgContainer: 'transparent',
+                    colorText: '#e5e7eb',
+                    colorTextHeading: '#ffffff',
+                    colorPrimary: '#3b82f6',
+                    colorBorder: 'rgba(75, 85, 99, 0.3)',
+                  },
+                  Table: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.5)',
+                    colorText: '#e5e7eb',
+                    colorTextHeading: '#ffffff',
+                    colorBorder: 'rgba(75, 85, 99, 0.3)',
+                    colorBorderSecondary: 'rgba(75, 85, 99, 0.2)',
+                  },
+                  Select: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.8)',
+                    colorText: '#e5e7eb',
+                    colorBorder: 'rgba(75, 85, 99, 0.5)',
+                    colorTextPlaceholder: '#9ca3af',
+                  },
+                  DatePicker: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.8)',
+                    colorText: '#e5e7eb',
+                    colorBorder: 'rgba(75, 85, 99, 0.5)',
+                    colorTextPlaceholder: '#9ca3af',
+                  },
+                  Button: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.8)',
+                    colorText: '#e5e7eb',
+                    colorPrimary: '#3b82f6',
+                  },
+                  Card: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.5)',
+                    colorText: '#e5e7eb',
+                    colorBorder: 'rgba(75, 85, 99, 0.3)',
+                  },
+                },
+              }}
+            >
+              <div className="bg-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-700/50 p-6 shadow-2xl">
+                <Tabs
+                  activeKey={activeTab}
+                  onChange={handleTabChange}
+                  items={tabItems}
+                  className="my-agents-tabs"
+                />
+              </div>
+            </ConfigProvider>
+          </div>
         </div>
       </div>
     </div>

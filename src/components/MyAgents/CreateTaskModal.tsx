@@ -49,7 +49,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
   const fetchAgents = async () => {
     try {
-      const { data } = await axios.get('/api/my-agents/list');
+      const data = await axios.get<Agent[]>('/api/my-agents/list');
       setAgents(data);
     } catch (error) {
       message.error('获取 Agent 列表失败');

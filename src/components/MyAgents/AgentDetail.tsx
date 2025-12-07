@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, Button, Descriptions, Tag, message, Spin } from 'antd';
+import { Card, Button, Descriptions, Tag, message, Spin, ConfigProvider } from 'antd';
 import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 import axios from '../../common/axios';
+import AppNavbar from '../AppNavbar';
 import CreateAgentModal from './CreateAgentModal';
 
 interface Agent {
@@ -45,7 +46,7 @@ const AgentDetail: React.FC = () => {
     if (!agentId) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(`/api/my-agents/${agentId}`);
+      const data = await axios.get<Agent>(`/api/my-agents/${agentId}`);
       setAgent(data);
     } catch (error) {
       message.error('获取 Agent 详情失败');
@@ -58,7 +59,7 @@ const AgentDetail: React.FC = () => {
   const fetchAgentTasks = async () => {
     if (!agentId) return;
     try {
-      const { data } = await axios.get(`/api/my-agents/tasks?agent_id=${agentId}`);
+      const data = await axios.get<AgentTask[]>(`/api/my-agents/tasks?agent_id=${agentId}`);
       setTasks(data);
     } catch (error) {
       console.error('获取任务列表失败', error);
@@ -101,26 +102,61 @@ const AgentDetail: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-6 flex items-center justify-between">
-          <Button
-            icon={<ArrowLeftOutlined />}
-            onClick={handleBack}
-            className="text-gray-300"
-          >
-            返回
-          </Button>
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={handleEdit}
-          >
-            编辑 Agent
-          </Button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative flex flex-col">
+      <div className="fixed inset-0 z-0">
+        <img
+          src="https://p4-ad.adkwai.com/udata/pkg/ks-ad-fe/riskagentBG.png"
+          alt="background"
+          className="w-full h-full object-cover opacity-30"
+        />
+      </div>
 
-        <Card className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 mb-6">
+      <div className="relative z-10 flex flex-col flex-1">
+        <AppNavbar />
+
+        <div className="flex-1 p-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-6 flex items-center justify-between">
+              <Button
+                icon={<ArrowLeftOutlined />}
+                onClick={handleBack}
+                className="bg-gray-700/50 border-gray-600 text-gray-300 hover:bg-gray-600/50 hover:text-white hover:border-gray-500"
+              >
+                返回
+              </Button>
+              <Button
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={handleEdit}
+              >
+                编辑 Agent
+              </Button>
+            </div>
+
+            <ConfigProvider
+              theme={{
+                components: {
+                  Card: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.5)',
+                    colorText: '#e5e7eb',
+                    colorBorder: 'rgba(75, 85, 99, 0.3)',
+                  },
+                  Descriptions: {
+                    colorText: '#e5e7eb',
+                    colorTextLabel: '#9ca3af',
+                  },
+                  Tag: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.8)',
+                  },
+                  Button: {
+                    colorBgContainer: 'rgba(31, 41, 55, 0.8)',
+                    colorText: '#e5e7eb',
+                    colorPrimary: '#3b82f6',
+                  },
+                },
+              }}
+            >
+              <Card className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 mb-6 shadow-2xl">
           <div className="mb-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-white">{agent.agent_name}</h1>
             <Tag color={agent.status ? 'green' : 'default'}>
@@ -205,16 +241,19 @@ const AgentDetail: React.FC = () => {
             </div>
           )}
         </Card>
-      </div>
+            </ConfigProvider>
 
-      {agent && (
-        <CreateAgentModal
-          visible={modalVisible}
-          onCancel={() => setModalVisible(false)}
-          onSuccess={handleModalSuccess}
-          editingAgent={agent}
-        />
-      )}
+            {agent && (
+              <CreateAgentModal
+                visible={modalVisible}
+                onCancel={() => setModalVisible(false)}
+                onSuccess={handleModalSuccess}
+                editingAgent={agent}
+              />
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

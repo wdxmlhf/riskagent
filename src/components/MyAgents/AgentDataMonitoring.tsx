@@ -40,7 +40,7 @@ const AgentDataMonitoring: React.FC = () => {
 
   const fetchAgents = async () => {
     try {
-      const { data } = await axios.get('/api/my-agents/list');
+      const data = await axios.get<Agent[]>('/api/my-agents/list');
       setAgents(data);
     } catch (error) {
       message.error('获取 Agent 列表失败');
@@ -59,7 +59,7 @@ const AgentDataMonitoring: React.FC = () => {
         params.end_date = dateRange[1].format('YYYY-MM-DD');
       }
 
-      const { data } = await axios.get('/api/my-agents/stats', { params });
+      const data = await axios.get<AgentStats[]>('/api/my-agents/stats', { params });
       setStatsData(data);
     } catch (error) {
       message.error('获取统计数据失败');

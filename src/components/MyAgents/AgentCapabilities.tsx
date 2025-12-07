@@ -28,7 +28,7 @@ const AgentCapabilities: React.FC = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('/api/my-agents/tasks');
+      const data = await axios.get<AgentTask[]>('/api/my-agents/tasks');
       setTasks(data);
     } catch (error) {
       message.error('获取任务列表失败');
@@ -67,7 +67,7 @@ const AgentCapabilities: React.FC = () => {
 
   const handleToggleStatus = async (taskId: string, isActive: boolean) => {
     try {
-      await axios.patch(`/api/my-agents/tasks/${taskId}`, { is_active: !isActive });
+      await axios.put(`/api/my-agents/tasks/${taskId}`, { is_active: !isActive });
       message.success(isActive ? '已停用' : '已启用');
       fetchTasks();
     } catch (error) {
